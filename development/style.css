@@ -2,31 +2,201 @@
   margin: 0;
   padding: 0;
 }
+
 html {
   height: 100%;
+  width: 100%;
 }
 
 /* Use display:table and display:table-cell
 so that we can use vertical-align:middle */
 body {
-  background: #444;
-  color: #fff;
-  display: table;
+  background: #fff;
+  color: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
 }
-output {
-  display: table-cell;
-  font-family: monospace;
-  font-size: 10em;
-  text-align: center;
-  text-shadow: 0 0.1em 0.1em #000;
-  vertical-align: middle;
+
+.all {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+header {
+    position: absolute;
+    display: table;
+    width: 94%;
+    top:0;
+    left:0;
+    padding: 0 3%;
+    background-color: #900;
+    color: white;
+    font-weight: bold;
+    overflow:hidden;
+    z-index: 1;
+}
+
+.large header {
+	height: 10%;
+    min-height: 20px;
+    font-size: 1em;
+}
+.big header{
+	height: 10%;
+    min-height: 18px;
+    font-size: 0.85em;
+}
+.small header {
+	height: 10%;
+    min-height: 15px;
+    font-size: 0.7em;
+}
+
+header span,
+header output {
+	display: table-cell;
+    vertical-align: middle;
+}
+
+output#date {
+	left: 50%;
+    right: 50%;
+    text-align: center;
+}
+output#clock {
+    left: 100%;
+    text-align: right;
+}
+
+#main {
+	position: absolute;
+	display: block;
+	top: 10%;
+	left: 0;
+	height: 90%;
+	width: 100%;
+	font-size: 1.7em;
+	vertical-align: middle;
+}
+
+#latest_wrapper,
+#previous_wrapper,
+#oldest_wrapper {
+  display: table;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  
+  text-shadow: 0 0.1em 0.1em #999;
+  /*border: 1px solid green;*/
+  color:#2a5174;
+  
+}
+
+#latest_wrapper {
+    background-color: #f9f9f9;
+}
+#previous_wrapper {
+    background-color: #eee;
+}
+#oldest_wrapper {
+    background-color: #ddd;
+}
+
+.large #latest_wrapper {
+	top: 0%;
+	height: 50%;
+	font-size: 95%;
+}
+.large #previous_wrapper {
+	top: 50%;
+	height: 30%;
+	display: table;
+	font-size: 80%;
+}
+.large #oldest_wrapper {
+	top: 80%;
+	height: 20%;
+	display: table;
+	font-size: 55%;
+}
+
+.big #latest_wrapper {
+	top: 0%;
+	height: 75%;
+	font-size: 80%;
+}
+.big #previous_wrapper {
+	top: 75%;
+	height: 25%;
+	display: table;
+	font-size: 40%;
+}
+.big #oldest_wrapper {
+	display: none;
+}
+
+.small #latest_wrapper {
+	top:0%;
+	height: 100%;
+	font-size: 45%;
+}
+.small #previous_wrapper {
+	display: none;
+}
+.small #oldest_wrapper {
+	display: none;
+}
+
+
+output#latest,
+output#previous,
+output#oldest {
+	position: relative;
+	height: 100%;
+	width: 94%;
+	padding: 0 3%;
+	display:table-cell;
+	text-align: center;
+	vertical-align: middle;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	
+	/*border: 1px dashed blue;*/
+}
+
+.time {
+	font-size: 10px;
+	float: right;
+	/*margin-top: -5px;*/
+}
+.small .time {
+	font-size: 8px;
+}
+.big .time {
+	
+}
+#oldest .time {
+	/*display:none;*/
+}
+.desc {
+	display: none;
 }
 
 /* Styles here are only applied in a "minimized" state */
 @media screen and (view-mode: minimized) {
-  output {
-    font-size: 1.8em;
+output#latest,
+output#previous,
+output#oldest {
+  }
+  header,
+  output#clock {
+    font-size: 1em;
   }
 }

@@ -3,10 +3,20 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="style.css">
-<title>Clock Speed Dial Extension</title>
+<title>BBC News Speed Dial Extension</title>
 </head>
 <body>
-<output></output>
-<script src="scripts/background.js"></script>
+    <div id="all">
+	    <header><span>BBC</span><output id="date">11.09</output><output id="clock">01:23</output></header>
+	    <div id="main">
+			<div id="latest_wrapper"><output id="latest">Updating news...</output></div>
+			<div id="previous_wrapper"><output id="previous"></output></div>
+			<div id="oldest_wrapper"><output id="oldest"></output></div>
+	    </div>
+	    <script src="scripts/opera/parsers.js"></script>
+	    <script src="scripts/opera/animation.js"></script>
+	    <script src="scripts/opera/Feed.js"></script>
+	    <script src="scripts/background.js"></script>
+    </div>
 </body>
 </html>
