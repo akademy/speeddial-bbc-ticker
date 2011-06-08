@@ -28,10 +28,12 @@ window.addEventListener( 'load', function() {
     
 	    var anim = obj;
 	    
-	    if( !obj.checkRun )
+	    if( !obj.checkRun ) {
 	    	anim = obj.createAnimation();
-	    else if( obj.checkRun() )
+	    }
+	    else if( obj.checkRun() ) {
 	    	obj.stop();
+	    }
     	
     	anim.addAnimation( 'left', '0px', move+'px' );
         anim.addAnimation( 'opacity', '1.0', '0.0' );
@@ -45,10 +47,12 @@ window.addEventListener( 'load', function() {
 	    
 	    var anim = obj;
 	    
-	    if( !obj.checkRun )
+	    if( !obj.checkRun ) {
 	    	anim = obj.createAnimation();
-	    else if( obj.checkRun() )
+	    }
+	    else if( obj.checkRun() ) {
 	    	obj.stop();
+	    }
     	
 		anim.addAnimation( 'left', '-'+move+'px', '0px' );
 		anim.addAnimation( 'opacity', '0.0', '1.0' );
@@ -97,20 +101,23 @@ window.addEventListener( 'load', function() {
 	    	
 	    	anim.run();
 	    	
-	    	if( haveNext( data ) )
+	    	if( haveNext( data ) ) {
 	    		timerFunction();
+	    	}
 	    	
-		}       
+		};       
 
 	    anim.run();
     }
     
     function getText( maybeText ) {
-    	if( maybeText && maybeText.nodeValue )
+    	if( maybeText && maybeText.nodeValue ) {
     		return maybeText.nodeValue;
+    	}
     		
-    	if( maybeText && maybeText.childNodes )
+    	if( maybeText && maybeText.childNodes ) {
     		return maybeText.childNodes.item(0).nodeValue;
+    	}
     		
     	return maybeText;
     	
@@ -119,10 +126,12 @@ window.addEventListener( 'load', function() {
     function next( data )  {
     	var newItem = data.current;
     	
-    	if( newItem === -1 || newItem + 1 > data.max)
+    	if( newItem === -1 || newItem + 1 > data.max) {
     		newItem = data.min;
-    	else
+    	}
+    	else {
     		newItem++;
+    	}
     	
 		data.current = newItem;
 		    	
@@ -141,8 +150,9 @@ window.addEventListener( 'load', function() {
     	latestTimeout = setTimeout( function () { changeLatest(); }, latestData.change );
     }
     function stopLatestTimer() {
-    	if( latestTimeout > 0 )
+    	if( latestTimeout > 0 ) {
     		clearTimeout( latestTimeout );
+    	}
     	latestTimeout = -1;
     }
     
@@ -154,8 +164,9 @@ window.addEventListener( 'load', function() {
     	previousTimeout = setTimeout( function () { changePrevious(); }, previousData.change );
     }
     function stopPreviousTimer() {
-    	if( previousTimeout > 0 )
+    	if( previousTimeout > 0 ) {
     		clearTimeout( previousTimeout );
+    	}
     	previousTimeout = -1;
     }
     
@@ -167,8 +178,9 @@ window.addEventListener( 'load', function() {
      	oldestTimeout = setTimeout( function () { changeOldest(); }, oldestData.change );
     }
     function stopOldestTimer() {
-    	if( oldestTimeout > 0 )
+    	if( oldestTimeout > 0 ) {
     		clearTimeout( oldestTimeout );
+    	}
     	oldestTimeout = -1;
     }
     
@@ -203,12 +215,13 @@ window.addEventListener( 'load', function() {
 			
 			if( bbcFeed && bbcFeed.getItemList().length > 0 )
 			{
-				if( updateDate )
+				if( updateDate ) {
 					title += " (" + formatTime(updateDate.getHours()) + ':' + formatTime(updateDate.getMinutes()) + ")";
+				}
 			}
 			else
 			{
-				title += " (no items)"
+				title += " (no items)";
 			}
     			    
 			opera.contexts.speeddial.title = title;
@@ -227,19 +240,19 @@ window.addEventListener( 'load', function() {
     
 		debug( "Strage event: " + event.key + " " + event.oldValue + " " + event.newValue );
 		
-    	if( event.oldValue != event.newValue )
+    	if( event.oldValue !== event.newValue )
     	{
-			if (event.key == 'changeSpeed' && widget.preferences.changeSpeed ) {
+			if (event.key === 'changeSpeed' && widget.preferences.changeSpeed ) {
 				speed = widget.preferences.changeSpeed;
 		    	_setSections(size);
 			}
-			else if (event.key == 'rssFeed' && widget.preferences.rssFeed ) {
+			else if (event.key === 'rssFeed' && widget.preferences.rssFeed ) {
 				createFeed();
 			}
-			else if (event.key == 'title' && widget.preferences.title ) {
+			else if (event.key === 'title' && widget.preferences.title ) {
 				updateTitle();
 			}
-			else if (event.key == 'urlLink' && widget.preferences.urlLink ) {
+			else if (event.key === 'urlLink' && widget.preferences.urlLink ) {
 				updateUrl();
 			}
 			
@@ -251,7 +264,7 @@ window.addEventListener( 'load', function() {
         var oldSize = size;
         _setWidth();
         
-        if( oldSize != size )
+        if( oldSize !== size )
         {
         	_setSections( size );
 			_startSections( size );
@@ -259,16 +272,20 @@ window.addEventListener( 'load', function() {
     }
     
     function _setWidth() {
-         width = document.getElementById('all').clientWidth;
+        width = document.getElementById('all').clientWidth;
          
-         if(width > 400)
+        if(width > 400) {
         	size = 'large';
-        else if (width > 250)
+        }
+        else if (width > 250) {
         	size = 'big';
-        else if (width > 170)
+        }
+        else if (width > 170) {
         	size = 'small';
-        else
+        }
+        else {
         	size = 'tiny';
+        }
 			
 		document.getElementById('all').className = size;
 		debug( "Size: " + size + " (" + width + ")" );
@@ -277,14 +294,14 @@ window.addEventListener( 'load', function() {
     }
     
     function _setSections( size ) {
-    	if( size == 'large' )
+    	if( size === 'large' )
 	    { 
 			// large view
 	        latestData = { min: 0, max: 0, current: -1, change: 0 };
 			previousData = { min: 1, max: 3, current: -1, change: 6000 * speed };
 			oldestData = { min: 4, max: feedCount-1, current: -1, change: 4000 * speed };
 	    }
-	    else if ( size == 'big' ){
+	    else if ( size === 'big' ){
 	    	// big view		    	
 	        latestData = { min: 0, max: 2, current: -1, change: 6000 * speed };
 			previousData = { min: 1, max: feedCount-1, current: -1, change: 4000 * speed };
@@ -301,14 +318,14 @@ window.addEventListener( 'load', function() {
     }
     
     function _startSections( size ) {
-		if( size == 'large' )
+		if( size === 'large' )
 	    { 
 			// large view
 			changeLatest();
 			changePrevious();
 			changeOldest();
 	    }
-	    else if ( size == 'big' ){
+	    else if ( size === 'big' ){
 	    	// big view
 			changeLatest();
 			changePrevious();
@@ -339,12 +356,12 @@ window.addEventListener( 'load', function() {
         mins = datetime.getMinutes();
         secs = datetime.getSeconds();
    
-   		if( size == 'small' || size == 'tiny' )
+   		if( size === 'small' || size === 'tiny' )
    		{
         	outputdate.innerHTML = formatTime(date) + '.' + formatTime(month);
         	outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins);
         }
-        else if( size == 'big' )
+        else if( size === 'big' )
         {
         	outputdate.innerHTML = formatTime(date) + ' ' + monthsShort[month-1];
 	        outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins) + ':' + formatTime(secs);
@@ -357,21 +374,23 @@ window.addEventListener( 'load', function() {
     }, 500); // Twice a second to allow for slight delays in JavaScript execution
    
    function debug( mess ) {
-   		if( debugging )
+   		if( debugging ) {
    			opera.postError( mess );
-   };
+        }
+   }
    
    	function createFeed() {
-		if( bbcFeed && bbcFeed.clearUpdateInterval )
+		if( bbcFeed && bbcFeed.clearUpdateInterval ) {
 			bbcFeed.clearUpdateInterval();
+		}
 			
 		if (widget.preferences.rssFeed ) {
 			rssFeed = widget.preferences.rssFeed;
 		}
 		
-    	bbcFeed = new Feed( rssFeed, 'BBC News', 'News from the BBC', newPost, 5, parsers['generic'], feedMax );
-    	bbcFeed.update();
-    };
+		bbcFeed = new Feed( rssFeed, 'BBC News', 'News from the BBC', newPost, 5, parsers['generic'], feedMax );
+		bbcFeed.update();
+    }
     
 	// 
 	// Begin
