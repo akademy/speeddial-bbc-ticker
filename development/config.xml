@@ -6,6 +6,12 @@
     <feature name="opera:speeddial" required="false">
         <param name="url" value="http://www.bbc.co.uk/news/world/"/>
     </feature> 
-    <access origin="http://feeds.bbci.co.uk" subdomains="false"/>
+    <access origin="http://bbc.co.uk" subdomains="true"/>
+    <access origin="http://bbci.co.uk" subdomains="true"/>
     <icon src="images/icon.png"/>
+    
+	<preference name="changeSpeed" value="2" />
+	<preference name="rssFeed" value="http://feeds.bbci.co.uk/news/world/rss.xml" />
+	<preference name="urlLink" value="http://www.bbc.co.uk/news/world/" />
+	<preference name="title" value="World" />
 </widget>

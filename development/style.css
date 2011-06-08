@@ -8,8 +8,6 @@ html {
   width: 100%;
 }
 
-/* Use display:table and display:table-cell
-so that we can use vertical-align:middle */
 body {
   background: #fff;
   color: #000;
@@ -18,9 +16,10 @@ body {
   left: 0;
   height: 100%;
   width: 100%;
+  font-family: "Arial", "Helmet", "Freesans", sans-serif;
 }
 
-.all {
+#all {
   position: absolute;
   top: 0;
   left: 0;
@@ -31,15 +30,17 @@ body {
 header {
     position: absolute;
     display: table;
-    width: 94%;
+    width: 95%;
     top:0;
     left:0;
     padding: 0 3%;
     background-color: #900;
+    background-image: -o-linear-gradient(45deg, #900,#a00);
     color: white;
     font-weight: bold;
     overflow:hidden;
     z-index: 1;
+    box-shadow: 0px 0px 5px 0px black;
 }
 
 .large header {
@@ -52,7 +53,8 @@ header {
     min-height: 18px;
     font-size: 0.85em;
 }
-.small header {
+.small header,
+.tiny header {
 	height: 10%;
     min-height: 15px;
     font-size: 0.7em;
@@ -65,13 +67,14 @@ header output {
 }
 
 output#date {
-	left: 50%;
-    right: 50%;
+    left: 50%;
     text-align: center;
 }
 output#clock {
     left: 100%;
     text-align: right;
+}
+span#name {
 }
 
 #main {
@@ -85,6 +88,10 @@ output#clock {
 	vertical-align: middle;
 }
 
+
+/*
+  Item sections
+*/
 #latest_wrapper,
 #previous_wrapper,
 #oldest_wrapper {
@@ -93,7 +100,7 @@ output#clock {
   width: 100%;
   left: 0;
   
-  text-shadow: 0 0.1em 0.1em #999;
+  text-shadow: 0 0.1em 0.2em #999;
   /*border: 1px solid green;*/
   color:#2a5174;
   
@@ -101,12 +108,15 @@ output#clock {
 
 #latest_wrapper {
     background-color: #f9f9f9;
+    background-image: -o-linear-gradient(#f9f9f9,#e5e5e5);
 }
 #previous_wrapper {
     background-color: #eee;
+    background-image: -o-linear-gradient(#eeeeee,#dadada);
 }
 #oldest_wrapper {
     background-color: #ddd;
+    background-image: -o-linear-gradient(#e1e1e1,#d1d1d1);
 }
 
 .large #latest_wrapper {
@@ -116,13 +126,13 @@ output#clock {
 }
 .large #previous_wrapper {
 	top: 50%;
-	height: 30%;
+	height: 31%;
 	display: table;
 	font-size: 80%;
 }
 .large #oldest_wrapper {
 	top: 80%;
-	height: 20%;
+	height: 19%;
 	display: table;
 	font-size: 55%;
 }
@@ -145,15 +155,21 @@ output#clock {
 .small #latest_wrapper {
 	top:0%;
 	height: 100%;
+	font-size: 60%;
+}
+.tiny #latest_wrapper {
+	top:0%;
+	height: 100%;
 	font-size: 45%;
 }
-.small #previous_wrapper {
+.small #previous_wrapper,
+.tiny #previous_wrapper {
 	display: none;
 }
-.small #oldest_wrapper {
+.small #oldest_wrapper,
+.tiny #oldest_wrapper {
 	display: none;
 }
-
 
 output#latest,
 output#previous,
@@ -171,22 +187,45 @@ output#oldest {
 	/*border: 1px dashed blue;*/
 }
 
+/*
+  Item Time
+*/
 .time {
 	font-size: 10px;
 	float: right;
-	/*margin-top: -5px;*/
+	margin: 0px;
 }
-.small .time {
+.small .time,
+.tiny .time {
 	font-size: 8px;
 }
-.big .time {
-	
+.big .time {	
+}
+.large #previous .time {
+	margin-top: -10px;
 }
 #oldest .time {
 	/*display:none;*/
 }
-.desc {
+
+/*
+  Item Description
+*/
+.desc
+{
 	display: none;
+	text-align: justify;
+	/*margin-right: 10%;
+	border-right: 1px dotted #004;
+	padding-right: 5px;*/
+	color:#5a81a4;
+  	text-shadow: none;
+}
+.large #latest .desc,
+.large #previous .desc,
+.big #latest .desc  {
+	display: block;
+	font-size: 0.5em;
 }
 
 /* Styles here are only applied in a "minimized" state */

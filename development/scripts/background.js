@@ -1,40 +1,39 @@
-window.addEventListener('load', function() {
+window.addEventListener( 'load', function() {
     var bbcFeed = null;
-    var feedCount = 10;
+    var updateDate = null;
+    var feedMax = 10;
+    var feedCount = 0;
+    
     var debugging = false;
     
-    var latestData = {
-    	min: 0,
-    	max: 0,
-    	current: -1,
-    	change: 0
-    };
-    var previousData = {
-    	min: 1,
-    	max: 3,
-    	current: -1,
-    	change: 5000
-    };
-    var oldestData = {
-    	min: 4,
-    	max: feedCount-1,
-    	current: -1,
-    	change: 3500
-    };
+    var latestData = {};
+    var previousData = {};
+    var oldestData = {};
     
     var size = '';
+    var width = -1;
     var latestTimeout = -1;
     var previousTimeout = -1;
     var oldestTimeout = -1;
+    
+    var speed = 0;
+    var rssFeed = '';
+    var urlLink = '';
     
     function formatTime(time) {
 		    return (time < 10) ? '0' + time : time;
 		}
     
-    function animationHide( obj ) {
-    	var anim = obj.createAnimation();
+    function animationHide( obj, move ) {
+    
+	    var anim = obj;
+	    
+	    if( !obj.checkRun )
+	    	anim = obj.createAnimation();
+	    else if( obj.checkRun() )
+	    	obj.stop();
     	
-    	anim.addAnimation( 'left', '0px', '300px' );
+    	anim.addAnimation( 'left', '0px', move+'px' );
         anim.addAnimation( 'opacity', '1.0', '0.0' );
         anim.accelerationProfile = anim.accelerate;
         anim.speed = 12;
@@ -42,10 +41,16 @@ window.addEventListener('load', function() {
         return anim;
     }
     
-    function animationShow( obj ) {
-    	var anim = obj.createAnimation();
+    function animationShow( obj, move ) {
+	    
+	    var anim = obj;
+	    
+	    if( !obj.checkRun )
+	    	anim = obj.createAnimation();
+	    else if( obj.checkRun() )
+	    	obj.stop();
     	
-		anim.addAnimation( 'left', '-300px', '0px' );
+		anim.addAnimation( 'left', '-'+move+'px', '0px' );
 		anim.addAnimation( 'opacity', '0.0', '1.0' );
 	
 		anim.accelerationProfile = anim.decelerate;
@@ -57,9 +62,12 @@ window.addEventListener('load', function() {
     function change( objId, data, timerFunction )
     {
 	    var obj = document.querySelector( objId );
-	    var anim = animationHide( obj );
+	    var move = width;
+	    
+	    var anim = animationHide( obj, move );
 	    
 	    anim.onfinish = function() { 
+	    
 	    	var number = next( data );
 	    	var feed = bbcFeed.getItemList()[number];
 	    
@@ -69,14 +77,16 @@ window.addEventListener('load', function() {
 	    	var time = formatTime(pubed.getHours()) + ':' + formatTime(pubed.getMinutes());
 	    	var description = feed.getDesc();
 	    	
-
-		    var display = '<div class="title">' + title + '</div>';
+		    var display = '';
+		    //display += '<img style="float:left" width="66" height="49" src="http://news.bbcimg.co.uk/media/images/52945000/jpg/_52945223_44600348.jpg"/>'
+		    //display += '<img style="float:left" width="144" height="81" src="http://news.bbcimg.co.uk/media/images/52946000/jpg/_52946050_239q8ou6.jpg"/>'
+		    display += '<div class="title">' + getText( title ) + '</div>';
+		    display += '<div class="desc">' + getText( description ) + '</div>';
 		    display += '<div class="time">' + time + '</div>';
-		    display += '<div class="desc">' + description + '</div>';
 
 	    	obj.innerHTML = display;
 	    	
-	    	anim = animationShow( obj );
+	    	anim = animationShow( obj, move );
 	    	
 	    	/*if( haveNext( data ) ) {
 	    		anim.onfinsh = function() {
@@ -93,6 +103,17 @@ window.addEventListener('load', function() {
 		}       
 
 	    anim.run();
+    }
+    
+    function getText( maybeText ) {
+    	if( maybeText && maybeText.nodeValue )
+    		return maybeText.nodeValue;
+    		
+    	if( maybeText && maybeText.childNodes )
+    		return maybeText.childNodes.item(0).nodeValue;
+    		
+    	return maybeText;
+    	
     }
     
     function next( data )  {
@@ -152,71 +173,154 @@ window.addEventListener('load', function() {
     }
     
     function newPost(noChange, err) {
-    	debug( "newPost!" );
-        		
-        if (opera.contexts.speeddial) {
-		  	var now = new Date();
-			opera.contexts.speeddial.title = "BBC News - World  (" + formatTime(now.getHours()) + ':' + formatTime(now.getMinutes()) + ")";
-		}		
-						
-        changeLatest();
-        changePrevious();
-        changeOldest();
+    	debug( "Update feeds!" );
+        
+        if( bbcFeed.getItemList().length > 0 )
+        {
+        	feedCount = bbcFeed.getItemList().length;
+			updateDate = new Date();
+			
+			_setWidth();
+			_setSections(size);
+		    _startSections(size);
+		
+			addEventListener( 'resize', _resizeHandler, false );
+        	
+        }
+        
+        updateTitle();
     }
     
-    function _resizeHandler() {
-        //var cont_h = document.getElementById('all').clientHeight;
-        var cont_w = document.getElementById('all').clientWidth;
-        var newSize = '';
-        
-        if (cont_w > 400)
-        	newSize = 'large';
-        else if (cont_w > 250)
-        	newSize = 'big';
-        else 
-        	newSize = 'small';
-        
-        if( newSize != size )
-        {
-		    if( newSize == 'large' )
-		    { 
-				// large view
-		        latestData = { min: 0, max: 0, current: -1, change: 500 };
-				previousData = { min: 1, max: 3, current: -1, change: 5000 };
-				oldestData = { min: 4, max: feedCount-1, current: -1, change: 3500 };
+    function updateTitle()
+    {
+    	if (opera.contexts.speeddial) {
+    	
+			var title = 'BBC News';
 			
-				changeLatest();
-				changePrevious();
-				changeOldest();
-		    }
-		    else if ( newSize == 'big' ){
-		    	// big view		    	
-		        latestData = { min: 0, max: 2, current: -1, change: 6000 };
-				previousData = { min: 1, max: feedCount-1, current: -1, change: 3500 };
-			
-				changeLatest();
-				changePrevious();
-				stopOldestTimer();
-		    }
-		    else {
-		    	// small view
-		        latestData = { min: 0, max: feedCount-1, current: -1, change: 3500 };
-			
-				changeLatest();
-				stopPreviousTimer();
-				stopOldestTimer();
+			if (widget.preferences.title ) {
+				title += " - " + widget.preferences.title;
 			}
 			
-		    document.getElementById('all').className = size = newSize;
-			debug( "Size: " + newSize );
+			if( bbcFeed && bbcFeed.getItemList().length > 0 )
+			{
+				if( updateDate )
+					title += " (" + formatTime(updateDate.getHours()) + ':' + formatTime(updateDate.getMinutes()) + ")";
+			}
+			else
+			{
+				title += " (no items)"
+			}
+    			    
+			opera.contexts.speeddial.title = title;
+		}
+    }
+    function updateUrl()
+    {
+    	if (opera.contexts.speeddial) {
+    		if( widget.preferences.urlLink ) {
+				opera.contexts.speeddial.url = widget.preferences.urlLink;
+			}
 		}
     }
     
-    bbcFeed = new Feed( 'http://feeds.bbci.co.uk/news/world/rss.xml', 'BBC News', 'News from the BBC', newPost, 5, parsers['rss'], feedCount );
-    bbcFeed.forceUpdate();
+    window.addEventListener( 'storage', function(event) {
     
-    addEventListener( 'resize', _resizeHandler, false );
-    _resizeHandler();
+		debug( "Strage event: " + event.key + " " + event.oldValue + " " + event.newValue );
+		
+    	if( event.oldValue != event.newValue )
+    	{
+			if (event.key == 'changeSpeed' && widget.preferences.changeSpeed ) {
+				speed = widget.preferences.changeSpeed;
+		    	_setSections(size);
+			}
+			else if (event.key == 'rssFeed' && widget.preferences.rssFeed ) {
+				createFeed();
+			}
+			else if (event.key == 'title' && widget.preferences.title ) {
+				updateTitle();
+			}
+			else if (event.key == 'urlLink' && widget.preferences.urlLink ) {
+				updateUrl();
+			}
+			
+		}
+        
+	}, false );
+    
+    function _resizeHandler() {
+        var oldSize = size;
+        _setWidth();
+        
+        if( oldSize != size )
+        {
+        	_setSections( size );
+			_startSections( size );
+		}
+    }
+    
+    function _setWidth() {
+         width = document.getElementById('all').clientWidth;
+         
+         if(width > 400)
+        	size = 'large';
+        else if (width > 250)
+        	size = 'big';
+        else if (width > 170)
+        	size = 'small';
+        else
+        	size = 'tiny';
+			
+		document.getElementById('all').className = size;
+		debug( "Size: " + size + " (" + width + ")" );
+			
+        return width;
+    }
+    
+    function _setSections( size ) {
+    	if( size == 'large' )
+	    { 
+			// large view
+	        latestData = { min: 0, max: 0, current: -1, change: 0 };
+			previousData = { min: 1, max: 3, current: -1, change: 6000 * speed };
+			oldestData = { min: 4, max: feedCount-1, current: -1, change: 4000 * speed };
+	    }
+	    else if ( size == 'big' ){
+	    	// big view		    	
+	        latestData = { min: 0, max: 2, current: -1, change: 6000 * speed };
+			previousData = { min: 1, max: feedCount-1, current: -1, change: 4000 * speed };
+		
+			//oldestData = { min: 0, max: 0, current:0, change: 0 };
+	    }
+	    else {
+	    	// small view or tiny view
+	        latestData = { min: 0, max: feedCount-1, current: -1, change: 4000 * speed };
+		
+			//previousData = { min: 0, max: 0, current: 0, change: 0 };
+			//oldestData = { min: 0, max: 0, current:0, change: 0 };
+		}
+    }
+    
+    function _startSections( size ) {
+		if( size == 'large' )
+	    { 
+			// large view
+			changeLatest();
+			changePrevious();
+			changeOldest();
+	    }
+	    else if ( size == 'big' ){
+	    	// big view
+			changeLatest();
+			changePrevious();
+			stopOldestTimer();
+	    }
+	    else {
+	    	// small view or tiny view
+			changeLatest();
+			stopPreviousTimer();
+			stopOldestTimer();
+		}
+    }
     
     // Get and display the current time every 500 milliseconds
     var timer = window.setInterval(function() {
@@ -235,7 +339,7 @@ window.addEventListener('load', function() {
         mins = datetime.getMinutes();
         secs = datetime.getSeconds();
    
-   		if( size == 'small' )
+   		if( size == 'small' || size == 'tiny' )
    		{
         	outputdate.innerHTML = formatTime(date) + '.' + formatTime(month);
         	outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins);
@@ -255,6 +359,30 @@ window.addEventListener('load', function() {
    function debug( mess ) {
    		if( debugging )
    			opera.postError( mess );
-   }
+   };
+   
+   	function createFeed() {
+		if( bbcFeed && bbcFeed.clearUpdateInterval )
+			bbcFeed.clearUpdateInterval();
+			
+		if (widget.preferences.rssFeed ) {
+			rssFeed = widget.preferences.rssFeed;
+		}
+		
+    	bbcFeed = new Feed( rssFeed, 'BBC News', 'News from the BBC', newPost, 5, parsers['generic'], feedMax );
+    	bbcFeed.update();
+    };
+    
+	// 
+	// Begin
+	//
+	if (widget.preferences.changeSpeed ) {
+		speed = widget.preferences.changeSpeed;
+	}
+
+	updateTitle();
+	updateUrl();
+
+	createFeed();
    
 }, false);

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Options</title>
+  <style>
+  	body { background-color: #fff; font-family: "Arial", "Helmet", "Freesans", sans-serif; }
+  	h1 { font-size: 1em; color: white; background-color: #900; padding: 10px; margin:0px 0px 10px 0px; }
+  	
+  	table { font-size: 0.7em;}
+  	tr { margin: 0; padding: 0px; }
+  	td { padding: 5px; margin: 0px; }
+  	thead tr { font-weight: bold; border-bottom: 1px solid #aaa;}
+  	tr > td:first-child { border-right: 1px solid #aaa; width: 50px; }
+  	ul { background-color: #bbb; border: 2px solid #999; padding: 10px; list-style-type: none;}
+  	
+  	li { background-color: #ccc; border: 1px solid #ddd; padding: 10px; }
+  	input[type=text] { width: 300px; }
+  	input[type=button] { min-width: 50px; }
+  	label { width: 100px; }
+  	li p { font-size: smaller;}
+  </style>
+ </head>
+ <body>
+ 
+ <div id="wrapper"> 
+ <h1>BBC Ticker Options</h1>
+ <p>Here's your current settings:</p>
+ <table>
+ <thead>
+ <tr><td>Setting<td>Current
+ </thead>
+ <tbody>
+ <tr><td>RSS <td><span id="rsscurrent"></span>
+ <tr><td>URL <td><span id="urlcurrent"></span>
+ <tr><td>Title <td><span id="titlecurrent"></span>
+ <tr><td>Speed <td><span id="speedcurrent"></span>
+ </tbody>
+ </table>
+ 
+ <p>Here you can change the settings:</p>
+ <form>
+ 
+ <ul>
+   <li><label for="speed">Select item change speed:</label>
+   <select name="speed" id="speed" />
+     <option value="1">Fast</option>
+     <option value="2">Medium</option>
+     <option value="3">Slow</option>
+   </select>
+   <p>Change how quickly the RSS Items will change in the display. </p>
+   </li>
+   <li><label for="rss">Select RSS feed:</label>
+   <input type="text" name="rss" id="rss" value="" />
+   <input type="button" name="rssset" id="rssset" value="set"/>
+   <p>Set the RSS which will be shown, must have a main address of "bbc.co.uk" or "bbci.co.uk"<br/>
+   e.g. http://feeds.<b>bbci.co.uk</b>/news/world/rss.xml or http://www.<b>bbc.co.uk</b>/turkce/index.xml</p>
+   </li>
+   <li><label for="url">Select speeddial link:</label>
+   <input type="text" name="url" id="url" value="" />
+   <input type="button" name="urlset" id="urlset" value="set"/>
+   <p>Set the link that is triggered when the speed dial is pressed, this can be any URL.<br/>
+    e.g.: http://www.bbc.co.uk/news/world/ or http://www.bbc.co.uk/turkce/ or http://www.facebook.com/BringBackFirefly</p>
+   </li>
+   <li><label for="title">Select speeddial title:</label>
+   <input type="text" name="title" id="title" value="" />
+   <input type="button" name="titleset" id="titleset" value="set"/>
+   <p>Append to speed dial title "BBC News"<br/>
+    e.g.: "World" to make "BBC News - World" or </p>
+   </li>
+   <li>
+   <input type="button" name="defaults" id="defaults" value="Reset to defaults"/>
+   </ul>
+ 
+ </form> 
+ <script>
+ 
+	function getSpeed( num ) {
+		if( num == 1 )
+			return "Fast";
+		if( num == 2 )
+			return "Medium";
+			
+		return "Slow";
+	}
+ 
+ 	var speedcurrent = document.getElementById( 'speedcurrent' );
+	var rsscurrent = document.getElementById( 'rsscurrent' );
+	var urlcurrent = document.getElementById( 'urlcurrent' );
+	var titlecurrent = document.getElementById( 'titlecurrent' );
+ 
+	var speed = document.getElementById( 'speed' );
+	var rss = document.getElementById( 'rss' );
+	var rssset = document.getElementById( 'rssset' );
+	var url = document.getElementById( 'url' );
+	var urlset = document.getElementById( 'urlset' );
+	var title = document.getElementById( 'title' );
+	var titleset = document.getElementById( 'titleset' );
+	
+	var defaults = document.getElementById( 'defaults' );
+	
+	// setup
+	if ( widget.preferences.changeSpeed ) {
+		speed.value = widget.preferences.changeSpeed;
+		speedcurrent.innerHTML = getSpeed(widget.preferences.changeSpeed);
+	}
+	if ( widget.preferences.rssFeed ) {
+		rss.value = widget.preferences.rssFeed;
+		rsscurrent.innerHTML = widget.preferences.rssFeed;
+	}
+	if ( widget.preferences.urlLink ) {
+		url.value = widget.preferences.urlLink;
+		urlcurrent.innerHTML = widget.preferences.urlLink;
+	}
+	if ( widget.preferences.title ) {
+		title.value = widget.preferences.title;
+		titlecurrent.innerHTML = widget.preferences.title;
+	}
+	
+	
+	// update
+	speed.addEventListener( 'change', function() {
+		widget.preferences.changeSpeed = this.value;
+		speedcurrent.innerHTML = getSpeed(this.value);	
+	}, false );
+	
+	rssset.addEventListener( 'click', function() {
+		widget.preferences.rssFeed = rsscurrent.innerHTML = rss.value;
+	}, false );
+	
+	urlset.addEventListener( 'click', function() {
+		widget.preferences.urlLink = urlcurrent.innerHTML = url.value;	
+	}, false );
+
+	titleset.addEventListener( 'click', function() {
+		widget.preferences.title = titlecurrent.innerHTML = title.value;	
+	}, false );
+	
+	// Reset
+	defaults.addEventListener( 'click', function() {
+		if( confirm('Reset all values to their default?') ) {
+			widget.preferences.changeSpeed = speed.value = 2;
+			widget.preferences.rssFeed = rss.value = "http://feeds.bbci.co.uk/news/world/rss.xml";	
+			widget.preferences.urlLink = url.value = "http://www.bbc.co.uk/news/world/";	
+			widget.preferences.title = title.value = "World";
+		}	
+	}, false );	
+</script>
+ </div>
+ 
+ </body>
+</html>
