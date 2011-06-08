@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  height: 100%;
+}
+
+/* Use display:table and display:table-cell
+so that we can use vertical-align:middle */
+body {
+  background: #444;
+  color: #fff;
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+output {
+  display: table-cell;
+  font-family: monospace;
+  font-size: 10em;
+  text-align: center;
+  text-shadow: 0 0.1em 0.1em #000;
+  vertical-align: middle;
+}
+
+/* Styles here are only applied in a "minimized" state */
+@media screen and (view-mode: minimized) {
+  output {
+    font-size: 1.8em;
+  }
+}
