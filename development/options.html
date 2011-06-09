@@ -99,19 +99,19 @@
 	var defaults = document.getElementById( 'defaults' );
 	
 	// setup
-	if ( widget.preferences.changeSpeed ) {
+	if ( widget.preferences.changeSpeed !== undefined ) {
 		speed.value = widget.preferences.changeSpeed;
 		speedcurrent.innerHTML = getSpeed(widget.preferences.changeSpeed);
 	}
-	if ( widget.preferences.rssFeed ) {
+	if ( widget.preferences.rssFeed !== undefined ) {
 		rss.value = widget.preferences.rssFeed;
 		rsscurrent.innerHTML = widget.preferences.rssFeed;
 	}
-	if ( widget.preferences.urlLink ) {
+	if ( widget.preferences.urlLink !== undefined ) {
 		url.value = widget.preferences.urlLink;
 		urlcurrent.innerHTML = widget.preferences.urlLink;
 	}
-	if ( widget.preferences.title ) {
+	if ( widget.preferences.title !== undefined ) {
 		title.value = widget.preferences.title;
 		titlecurrent.innerHTML = widget.preferences.title;
 	}

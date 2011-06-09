@@ -4,7 +4,7 @@ window.addEventListener( 'load', function() {
     var feedMax = 10;
     var feedCount = 0;
     
-    var debugging = false;
+    var debugging = true;
     
     var latestData = {};
     var previousData = {};
@@ -209,7 +209,7 @@ window.addEventListener( 'load', function() {
     	
 			var title = 'BBC News';
 			
-			if (widget.preferences.title ) {
+			if (widget.preferences.title  !== undefined && widget.preferences.title  !== '' ) {
 				title += " - " + widget.preferences.title;
 			}
 			
@@ -238,21 +238,21 @@ window.addEventListener( 'load', function() {
     
     window.addEventListener( 'storage', function(event) {
     
-		debug( "Strage event: " + event.key + " " + event.oldValue + " " + event.newValue );
+		debug( "Strage event: " + event.key + " " + event.oldValue + " " + event.newValue !== undefined );
 		
     	if( event.oldValue !== event.newValue )
     	{
-			if (event.key === 'changeSpeed' && widget.preferences.changeSpeed ) {
+			if (event.key === 'changeSpeed' && widget.preferences.changeSpeed !== undefined ) {
 				speed = widget.preferences.changeSpeed;
 		    	_setSections(size);
 			}
-			else if (event.key === 'rssFeed' && widget.preferences.rssFeed ) {
+			else if (event.key === 'rssFeed' && widget.preferences.rssFeed !== undefined ) {
 				createFeed();
 			}
-			else if (event.key === 'title' && widget.preferences.title ) {
+			else if (event.key === 'title' && widget.preferences.title !== undefined ) {
 				updateTitle();
 			}
-			else if (event.key === 'urlLink' && widget.preferences.urlLink ) {
+			else if (event.key === 'urlLink' && widget.preferences.urlLink !== undefined ) {
 				updateUrl();
 			}
 			
