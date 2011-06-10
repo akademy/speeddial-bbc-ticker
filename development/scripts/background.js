@@ -4,7 +4,7 @@ window.addEventListener( 'load', function() {
     var feedMax = 10;
     var feedCount = 0;
     
-    var debugging = true;
+    var debugging = false;
     
     var latestData = {};
     var previousData = {};
@@ -80,10 +80,20 @@ window.addEventListener( 'load', function() {
 	    	var title = feed.getTitle();
 	    	var time = formatTime(pubed.getHours()) + ':' + formatTime(pubed.getMinutes());
 	    	var description = feed.getDesc();
+	    	var photoLarge = feed.getLargePhoto();
+	    	var photoSmall = feed.getSmallPhoto();
 	    	
 		    var display = '';
-		    //display += '<img style="float:left" width="66" height="49" src="http://news.bbcimg.co.uk/media/images/52945000/jpg/_52945223_44600348.jpg"/>'
-		    //display += '<img style="float:left" width="144" height="81" src="http://news.bbcimg.co.uk/media/images/52946000/jpg/_52946050_239q8ou6.jpg"/>'
+		    
+		    if( photoLarge ) {
+			    display += '<img class="img_lar" width="' + photoLarge.width + '" height="' + photoLarge.height + '" src="' + photoLarge.url + '"/>';
+			    //opera.postError( "L w:" + photoLarge.width + " h:" + photoLarge.height + " u:" + photoLarge.url );
+			 }
+		    if( photoSmall ) {
+			    display += '<img class="img_sma" width="' + photoSmall.width + '" height="' + photoSmall.height + '" src="' + photoSmall.url + '"/>';
+			    //opera.postError( "S w:" + photoSmall.width + " h:" + photoSmall.height + " u:" + photoSmall.url );
+			 }
+		    
 		    display += '<div class="title">' + getText( title ) + '</div>';
 		    display += '<div class="desc">' + getText( description ) + '</div>';
 		    display += '<div class="time">' + time + '</div>';

@@ -30,7 +30,7 @@
  * @constructor
  * @author Christian Krebbs
  */
-function FeedItem( _guid, _title, _description, _link, _pubDate) {
+function FeedItem( _guid, _title, _description, _link, _pubDate, _photos ) {
 
 	this.read = false;
 
@@ -38,7 +38,8 @@ function FeedItem( _guid, _title, _description, _link, _pubDate) {
 	var description = _description || '';
 	var link = _link || '';
 	var pubDate = _pubDate || null;
-    var guid = _guid || null; 
+   var guid = _guid || null; 
+   var photos = _photos || [];
 	
 	this.getTitle = function() {
         return title.cloneNode ? title.cloneNode(true) : title;
@@ -54,6 +55,40 @@ function FeedItem( _guid, _title, _description, _link, _pubDate) {
     }
 	this.getGUID = function() { return guid; }
 	
+	this.getSmallPhoto = function() {
+		var photo = null;
+		if( photos.length > 0 ) {
+			var width = photos[0].width;
+			var height = photos[0].height;
+			photo = photos[0];
+			
+			for (var i = 0; i < photos.length; i++) {
+				if( width * height > photos[i].width * photos[i].height ) {
+					photo = photos[i];
+					width = photos[i].width;
+					height = photos[i].height;
+				}
+			}
+		}
+		return photo;
+	}
+	this.getLargePhoto = function() {
+		var photo = null;
+		if( photos.length > 0 ) {
+			var width = photos[0].width;
+			var height = photos[0].height;
+			photo = photos[0];
+			
+			for (var i = 0; i < photos.length; i++) {
+				if( width * height < photos[i].width * photos[i].height ) {
+					photo = photos[i];
+					width = photos[i].width;
+					height = photos[i].height;
+				}
+			}
+		}
+		return photo;
+	}
 }
 
 /**

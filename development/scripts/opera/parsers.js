@@ -117,7 +117,28 @@ function rssPattern(item, isHTML) {
 		}
 	}
 	
-	return new FeedItem( guid, title, content, link, pubDate );
+		var links = item.getElementsByTagName('link');
+	var link = null;
+
+	
+	var photos = item.getElementsByTagName('thumbnail');
+	var thumbnails = [];
+	if( photos.length > 0 ) {
+		for (var i = 0; i < photos.length; i++) {
+			var url = photos[i].getAttribute('url');
+			var width = photos[i].getAttribute('width');
+			var height = photos[i].getAttribute('height');
+			if( url && width && height ) {
+				thumbnails.push( { 'url':url, 'width':width, 'height':height } );
+				//opera.postError( "url: " + url );
+			}
+		}
+	}
+	else {
+		//opera.postError( "No photos" );
+	}
+	
+	return new FeedItem( guid, title, content, link, pubDate, thumbnails );
 }
 
 function atomPatternHandler(xml) {
