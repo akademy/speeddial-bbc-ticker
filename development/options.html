@@ -73,16 +73,32 @@
  
  </form> 
  <script>
- 
 	function getSpeed( num ) {
-		if( num == 1 )
+		if( num == 1 ) {
 			return "Fast";
-		if( num == 2 )
+		}
+		if( num == 2 ) {
 			return "Medium";
+		}
 			
 		return "Slow";
 	}
- 
+	
+	function setRssHtml( rss ) {
+		return '<a href="' + rss + '">' + rss + '</a>';
+	}
+	function setUrlHtml( url ) {
+		return '<a href="' + url + '">' + url + '</a>';
+	}
+	function setTitleHtml( tit ) {
+		if( tit == '' ) {
+			return 'BBC News';
+		}
+		else {
+			return 'BBC News - <b>' + tit + '</b>';
+		}
+	}
+	
  	var speedcurrent = document.getElementById( 'speedcurrent' );
 	var rsscurrent = document.getElementById( 'rsscurrent' );
 	var urlcurrent = document.getElementById( 'urlcurrent' );
@@ -105,15 +121,15 @@
 	}
 	if ( widget.preferences.rssFeed !== undefined ) {
 		rss.value = widget.preferences.rssFeed;
-		rsscurrent.innerHTML = widget.preferences.rssFeed;
+		rsscurrent.innerHTML = setRssHtml( widget.preferences.rssFeed );
 	}
 	if ( widget.preferences.urlLink !== undefined ) {
 		url.value = widget.preferences.urlLink;
-		urlcurrent.innerHTML = widget.preferences.urlLink;
+		urlcurrent.innerHTML = setUrlHtml( widget.preferences.urlLink );
 	}
 	if ( widget.preferences.title !== undefined ) {
 		title.value = widget.preferences.title;
-		titlecurrent.innerHTML = widget.preferences.title;
+		titlecurrent.innerHTML = setTitleHtml(widget.preferences.title);
 	}
 	
 	
@@ -124,15 +140,18 @@
 	}, false );
 	
 	rssset.addEventListener( 'click', function() {
-		widget.preferences.rssFeed = rsscurrent.innerHTML = rss.value;
+		widget.preferences.rssFeed = rss.value
+		rsscurrent.innerHTML = setRssHtml( widget.preferences.rssFeed );
 	}, false );
 	
 	urlset.addEventListener( 'click', function() {
-		widget.preferences.urlLink = urlcurrent.innerHTML = url.value;	
+		widget.preferences.urlLink = url.value;
+		urlcurrent.innerHTML = 	setUrlHtml( widget.preferences.urlLink );
 	}, false );
 
 	titleset.addEventListener( 'click', function() {
-		widget.preferences.title = titlecurrent.innerHTML = title.value;	
+		widget.preferences.title = title.value;	
+		titlecurrent.innerHTML = setTitleHtml(widget.preferences.title);
 	}, false );
 	
 	// Reset
@@ -144,6 +163,7 @@
 			widget.preferences.title = title.value = "World";
 		}	
 	}, false );	
+	
 </script>
  </div>
  
