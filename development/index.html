@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="de bug">
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="style.css">
 <title>BBC News Speed Dial Extension</title>
 </head>
-<body>
-    <div id="all">
-	    <header><span id="name">BBC</span><output id="date"></output><output id="clock"></output></header>
-	    <div id="main">
-			<div id="latest_wrapper"><output id="latest"></output></div>
-			<div id="previous_wrapper"><output id="previous"></output></div>
-			<div id="oldest_wrapper"><output id="oldest"></output></div>
-	    </div>
-	    <script src="scripts/opera/parsers.js"></script>
-	    <script src="scripts/opera/animation.js"></script>
-	    <script src="scripts/opera/Feed.js"></script>
-	    <script src="scripts/background.js"></script>
-    </div>
-</body>
+	<body>
+		 <header>
+		 	<img id="mainname" src="images/BBC.svg" height="10px" /><output id="date"></output><output id="clock"></output>
+		 </header>
+		 
+		 <div id="main">
+			<section id="latest"><article></article></section>
+			<section id="previous"><article></article></section>
+			<section id="oldest"><article></article></section>
+		 </div>
+		 
+		 <script src="scripts/opera/parsers.js"></script>
+		 <script src="scripts/opera/animation.js"></script>
+		 <script src="scripts/opera/Feed.js"></script>
+		 <script src="scripts/background.js"></script>
+	</body>
 </html>

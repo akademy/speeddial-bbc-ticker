@@ -4,7 +4,7 @@ window.addEventListener( 'load', function() {
     var feedMax = 10;
     var feedCount = 0;
     
-    var debugging = false;
+    var debugging = true;
     
     var latestData = {};
     var previousData = {};
@@ -154,7 +154,7 @@ window.addEventListener( 'load', function() {
     
     function changeLatest() {
 	    stopLatestTimer();
-        change( '#latest', latestData,  function() { startLatestTimer(); } );
+        change( '#latest article', latestData,  function() { startLatestTimer(); } );
     }
     function startLatestTimer() {
     	latestTimeout = setTimeout( function () { changeLatest(); }, latestData.change );
@@ -168,7 +168,7 @@ window.addEventListener( 'load', function() {
     
     function changePrevious() {
     	stopPreviousTimer();
-        change( '#previous', previousData, function() { startPreviousTimer(); } );
+        change( '#previous article', previousData, function() { startPreviousTimer(); } );
     }
     function startPreviousTimer() {
     	previousTimeout = setTimeout( function () { changePrevious(); }, previousData.change );
@@ -182,7 +182,7 @@ window.addEventListener( 'load', function() {
     
     function changeOldest() {
     	stopOldestTimer();
-        change( '#oldest', oldestData, function() { startOldestTimer(); } );
+        change( '#oldest article', oldestData, function() { startOldestTimer(); } );
     }
     function startOldestTimer() {
      	oldestTimeout = setTimeout( function () { changeOldest(); }, oldestData.change );
@@ -219,7 +219,7 @@ window.addEventListener( 'load', function() {
     	
 			var title = 'BBC News';
 			
-			if (widget.preferences.title  !== undefined && widget.preferences.title  !== '' ) {
+			if (widget.preferences.title !== undefined && widget.preferences.title !== '' ) {
 				title += " - " + widget.preferences.title;
 			}
 			
@@ -248,7 +248,7 @@ window.addEventListener( 'load', function() {
     
     window.addEventListener( 'storage', function(event) {
     
-		debug( "Strage event: " + event.key + " " + event.oldValue + " " + event.newValue !== undefined );
+		debug( "Storage event: " + event.key + " " + event.oldValue + " " + event.newValue !== undefined );
 		
     	if( event.oldValue !== event.newValue )
     	{
@@ -282,7 +282,9 @@ window.addEventListener( 'load', function() {
     }
     
     function _setWidth() {
-        width = document.getElementById('all').clientWidth;
+    		bodyElement = document.getElementsByTagName('body')[0];
+	    	
+        width = bodyElement.clientWidth;
          
         if(width > 400) {
         	size = 'large';
@@ -297,8 +299,8 @@ window.addEventListener( 'load', function() {
         	size = 'tiny';
         }
 			
-		document.getElementById('all').className = size;
-		debug( "Size: " + size + " (" + width + ")" );
+			bodyElement.className = size;
+			debug( "Size: " + size + " (" + width + ")" );
 			
         return width;
     }
@@ -307,20 +309,20 @@ window.addEventListener( 'load', function() {
     	if( size === 'large' )
 	    { 
 			// large view
-	        latestData = { min: 0, max: 0, current: -1, change: 0 };
+	      latestData = { min: 0, max: 0, current: -1, change: 0 };
 			previousData = { min: 1, max: 3, current: -1, change: 6000 * speed };
 			oldestData = { min: 4, max: feedCount-1, current: -1, change: 4000 * speed };
 	    }
 	    else if ( size === 'big' ){
 	    	// big view		    	
-	        latestData = { min: 0, max: 2, current: -1, change: 6000 * speed };
+	      latestData = { min: 0, max: 2, current: -1, change: 6000 * speed };
 			previousData = { min: 1, max: feedCount-1, current: -1, change: 4000 * speed };
 		
 			//oldestData = { min: 0, max: 0, current:0, change: 0 };
 	    }
 	    else {
 	    	// small view or tiny view
-	        latestData = { min: 0, max: feedCount-1, current: -1, change: 4000 * speed };
+	      latestData = { min: 0, max: feedCount-1, current: -1, change: 4000 * speed };
 		
 			//previousData = { min: 0, max: 0, current: 0, change: 0 };
 			//oldestData = { min: 0, max: 0, current:0, change: 0 };
@@ -351,7 +353,7 @@ window.addEventListener( 'load', function() {
     
     // Get and display the current time every 500 milliseconds
     var timer = window.setInterval(function() {
-        var outputdate = document.querySelector('output#date');
+      var outputdate = document.querySelector('output#date');
 		var outputclock = document.querySelector('output#clock');
 		var date, year, month, da, hours, mins, secs;
 		

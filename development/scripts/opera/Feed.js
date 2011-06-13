@@ -105,7 +105,7 @@ function FeedItem( _guid, _title, _description, _link, _pubDate, _photos ) {
  * @constructor
  * @author Hans S. Toemmerholt, Opera Software ASA
  */
-function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandlerFunc, reqMaxItems ) {
+function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandlerFunc, reqMaxItems, sortFeeds ) {
 
 	/********* Instance variables ***********/
 	var newItemsFunc = feedListenerFunc;		//Callback function for new items
@@ -119,6 +119,7 @@ function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandler
 	var initRead = false;		//Whether or not read items have been loaded from prefs
 	var newTime = false;		//Old update interval time
 	
+	var sortFeed = sortFeeds || false;
 	var self = this;
 	
 	/* XHR object setup */
@@ -299,8 +300,10 @@ function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandler
 		var tempList = dataFunc(xml);
 		var newItems = false;
 
-		// Sort all received items
-		tempList.sort(pubDateComparator);
+		if( sortFeed ) {
+			// Sort all received items
+			tempList.sort(pubDateComparator);
+		}
 		
 		// Append #[maxItems] new items
 		var len = Math.min( tempList.length, maxItems );
@@ -318,8 +321,10 @@ function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandler
 			return;
 		}
 		
-		// Sort list of old items + #[maxItems] new items
-		itemList.sort(pubDateComparator);
+		if( sortFeed ) {
+			// Sort list of old items + #[maxItems] new items
+			itemList.sort(pubDateComparator);
+		}
 		
 		// Cut off excess items
 		cutItems();
