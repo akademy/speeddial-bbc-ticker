@@ -137,7 +137,7 @@ section {
 #oldest {
 	/*background-image: -o-linear-gradient(#e1e1e1,#d1d1d1);*/
 	background-color: #ddd;
-	color: black;
+	color: #444;
 }
 
 #latest {
