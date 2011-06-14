@@ -3,17 +3,21 @@
 	<name short="BBC News Ticker">BBC News Speeddial Ticker</name>
 	<description xml:lang="en">A BBC News ticker for Speeddial. It shows and links to the BBC news of your choice, constantly updating from the RSS feed.</description>
 	<author href="http://www.akademy.co.uk/me">Matthew Wilcoxson</author>
-    <feature name="opera:speeddial" required="false">
+    
+    <feature name="opera:speeddial" required="true">
         <param name="url" value="http://www.bbc.co.uk/news/world/"/>
     </feature> 
+    
     <access origin="http://bbc.co.uk" subdomains="true"/>
     <access origin="http://bbci.co.uk" subdomains="true"/>
     <access origin="http://bbcimg.co.uk" subdomains="true"/>
     
    <icon src="images/icon.png"/>
     
-	<preference name="changeSpeed" value="2" />
 	<preference name="rssFeed" value="http://feeds.bbci.co.uk/news/world/rss.xml" />
 	<preference name="urlLink" value="http://www.bbc.co.uk/news/world/" />
 	<preference name="title" value="World" />
+	
+	<preference name="changeSpeed" value="2" />
+	<preference name="animationType" value="1" />
 </widget>

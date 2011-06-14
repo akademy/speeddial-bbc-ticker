@@ -16,61 +16,91 @@ window.addEventListener( 'load', function() {
     var previousTimeout = -1;
     var oldestTimeout = -1;
     
-    var speed = 0;
     var rssFeed = '';
     var urlLink = '';
+    
+    var  speeds = {
+			fast : 1,
+			medium : 2,
+			slow : 3 }
+    var speed = speeds.medium;
+    var 	anims = {
+				slide_left : 1,
+				slide_right : 2,
+				fade : 3,
+				none: 4 }
+    var anim = anims.slide_left;
     
     function formatTime(time) {
 		    return (time < 10) ? '0' + time : time;
 		}
     
-    function animationHide( obj, move ) {
-    
-	    var anim = obj;
+    function animationHide( animObj, move, animType ) {
 	    
-	    if( !obj.checkRun ) {
-	    	anim = obj.createAnimation();
+	    if( !animObj.checkRun ) {
+	    	animObj = animObj.createAnimation();
 	    }
-	    else if( obj.checkRun() ) {
-	    	obj.stop();
+	    else if( animObj.checkRun() ) {
+	    	animObj.stop();
 	    }
-    	
-    	anim.addAnimation( 'left', '0px', move+'px' );
-        anim.addAnimation( 'opacity', '1.0', '0.0' );
-        anim.accelerationProfile = anim.accelerate;
-        anim.speed = 12;
+		
+    	debug( "Hide:Anim=" + animType );
+        if( animType === anims.slide_left ) {
+            animObj.addAnimation( 'left', '0px', move+'px' ); // Slide left
+			debug( "Hide: Slide left" + anims.slide_left );
+        }
+        if( animType === anims.slide_right) {
+			animObj.addAnimation( 'left', '0px', -move+'px'  ); // Slide right
+			debug( "Hide: Slide right" + anims.slide_right);
+		}
+        if( animType !== anims.none ) {
+			animObj.addAnimation( 'opacity', '1.0', '0.0' );
+			debug( "Hide: Fade" + anims.fade + " " + anims.none );
+		}
+        animObj.accelerationProfile = animObj.accelerate;
+        animObj.speed = 12;
         
-        return anim;
+        return animObj;
     }
     
-    function animationShow( obj, move ) {
+    function animationShow( animObj, move, animType ) {
 	    
-	    var anim = obj;
-	    
-	    if( !obj.checkRun ) {
-	    	anim = obj.createAnimation();
+	    if( !animObj.checkRun ) {
+	    	animObj = animObj.createAnimation();
 	    }
-	    else if( obj.checkRun() ) {
-	    	obj.stop();
+	    else if( animObj.checkRun() ) {
+	    	animObj.stop();
 	    }
     	
-		anim.addAnimation( 'left', '-'+move+'px', '0px' );
-		anim.addAnimation( 'opacity', '0.0', '1.0' );
+    	debug( "Show:Anim = " + animType );
+        if( animType === anims.slide_left) {		
+			animObj.addAnimation( 'left', '-'+move+'px', '0px' );// Slide left
+			debug( "Show:Slide left");
+		}
+		if( animType === anims.slide_right ) {
+			animObj.addAnimation( 'left', move+'px','0px' );// Slide right
+			debug( "Show:Slide right");
+		}
+		if( animType !== anims.none ) {
+			animObj.addAnimation( 'opacity', '0.0', '1.0' );
+			debug( "Show:Fade");
+		}
 	
-		anim.accelerationProfile = anim.decelerate;
-		anim.speed = 6; 
+		animObj.accelerationProfile = animObj.decelerate;
+		animObj.speed = 6; 
         
-        return anim;
+        return animObj;
     }
     
     function change( objId, data, timerFunction )
     {
 	    var obj = document.querySelector( objId );
 	    var move = width;
+	    var animType = anim;
+		
+	    var animObj = animationHide( obj, move, animType );
 	    
-	    var anim = animationHide( obj, move );
-	    
-	    anim.onfinish = function() { 
+	    animObj.onfinish = function() { 
 	    
 	    	var number = next( data );
 	    	var feed = bbcFeed.getItemList()[number];
@@ -100,16 +130,16 @@ window.addEventListener( 'load', function() {
 
 	    	obj.innerHTML = display;
 	    	
-	    	anim = animationShow( obj, move );
+	    	animObj = animationShow( obj, move, animType );
 	    	
 	    	/*if( haveNext( data ) ) {
-	    		anim.onfinsh = function() {
+	    		animObj.onfinsh = function() {
 	    			timerFunction();
 	    			debug( "Starting timer" );
 	    		}   
 	    	}*/
 	    	
-	    	anim.run();
+	    	animObj.run();
 	    	
 	    	if( haveNext( data ) ) {
 	    		timerFunction();
@@ -117,7 +147,7 @@ window.addEventListener( 'load', function() {
 	    	
 		};       
 
-	    anim.run();
+	    animObj.run();
     }
     
     function getText( maybeText ) {
@@ -245,16 +275,33 @@ window.addEventListener( 'load', function() {
 			}
 		}
     }
+	function updateAnim( num ) {
+		num = num * 1;
+		if( num === 1 ) {
+			anim = anims.slide_left;
+		}
+		else if( num === 2 ) {
+			anim = anims.slide_right;
+		}
+		else if( num === 3 ) {
+			anim = anims.fade;
+		}
+		else  {
+			anim = anims.none;
+		}
+	}
     
     window.addEventListener( 'storage', function(event) {
-    
-		debug( "Storage event: " + event.key + " " + event.oldValue + " " + event.newValue !== undefined );
+		debug( "Storage event: " + event.key + " " + event.oldValue + " " + event.newValue );
 		
     	if( event.oldValue !== event.newValue )
     	{
 			if (event.key === 'changeSpeed' && widget.preferences.changeSpeed !== undefined ) {
 				speed = widget.preferences.changeSpeed;
 		    	_setSections(size);
+			}
+			else if (event.key === 'animationType' && widget.preferences.animationType !== undefined ) {
+				updateAnim( widget.preferences.animationType );
 			}
 			else if (event.key === 'rssFeed' && widget.preferences.rssFeed !== undefined ) {
 				createFeed();
@@ -316,7 +363,7 @@ window.addEventListener( 'load', function() {
 	    else if ( size === 'big' ){
 	    	// big view		    	
 	      latestData = { min: 0, max: 2, current: -1, change: 6000 * speed };
-			previousData = { min: 1, max: feedCount-1, current: -1, change: 4000 * speed };
+			previousData = { min: 3, max: feedCount-1, current: -1, change: 4000 * speed };
 		
 			//oldestData = { min: 0, max: 0, current:0, change: 0 };
 	    }
@@ -410,7 +457,9 @@ window.addEventListener( 'load', function() {
 	if (widget.preferences.changeSpeed ) {
 		speed = widget.preferences.changeSpeed;
 	}
-
+	if (widget.preferences.animationType ) {
+		updateAnim( widget.preferences.animationType );
+	}
 	updateTitle();
 	updateUrl();
 

@@ -99,8 +99,6 @@ output#clock {
 	width: 100%;
 	font-size: 1.7em;
 	vertical-align: middle;
-	
-	border-bottom: 3px solid #500;
 }
 .tiny #main {
 	top: 8%;
@@ -128,6 +126,7 @@ section {
 #latest {
 	/*background-image: -o-linear-gradient(#f9f9f9,#e5e5e5);*/
 	background-color: #900;
+	background-image: url('images/globe-red.png');
 	color: white;
 }
 #previous {
@@ -138,7 +137,7 @@ section {
 #oldest {
 	/*background-image: -o-linear-gradient(#e1e1e1,#d1d1d1);*/
 	background-color: #ddd;
-	color: black;
+	color: #444;
 }
 
 #latest {

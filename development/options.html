@@ -4,7 +4,9 @@
   <title>Options</title>
   <style>
   	body { background-color: #fff; font-family: "Arial", "Helmet", "Freesans", sans-serif; }
-  	h1 { font-size: 1em; color: white; background-color: #900; padding: 10px; margin:0px 0px 10px 0px; }
+  	h1 { font-size: 1em; color: white; background-color: #900; padding: 10px; margin:0px 0px 10px 0px;  }
+  	h1 img { padding-right: 10px; }
+  	h1 span { vertical-align:middle; }
   	
   	table { font-size: 0.7em;}
   	tr { margin: 0; padding: 0px; }
@@ -23,7 +25,7 @@
  <body>
  
  <div id="wrapper"> 
- <h1>BBC Ticker Options</h1>
+ <h1><img src="images/icon.png"/><span>BBC Ticker Options</span></h1>
  <p>Here's your current settings:</p>
  <table>
  <thead>
@@ -33,7 +35,9 @@
  <tr><td>RSS <td><span id="rsscurrent"></span>
  <tr><td>URL <td><span id="urlcurrent"></span>
  <tr><td>Title <td><span id="titlecurrent"></span>
+ <tr><td><td><span></span>
  <tr><td>Speed <td><span id="speedcurrent"></span>
+ <tr><td>Animation <td><span id="animcurrent"></span>
  </tbody>
  </table>
  
@@ -41,14 +45,7 @@
  <form>
  
  <ul>
-   <li><label for="speed">Select item change speed:</label>
-   <select name="speed" id="speed" />
-     <option value="1">Fast</option>
-     <option value="2">Medium</option>
-     <option value="3">Slow</option>
-   </select>
-   <p>Change how quickly the RSS Items will change in the display. </p>
-   </li>
+	<li><h3>News settings</h3></li>
    <li><label for="rss">Select RSS feed:</label>
    <input type="text" name="rss" id="rss" value="" />
    <input type="button" name="rssset" id="rssset" value="set"/>
@@ -67,83 +64,153 @@
    <p>Append to speed dial title "BBC News"<br/>
     e.g.: "World" to make "BBC News - World" </p>
    </li>
-   <li>
-   <input type="button" name="defaults" id="defaults" value="Reset to defaults"/>
-   </ul>
+</ul>
+<ul>
+	<li><h3>Display settings</h3></li>
+   <li><label for="speed">Select item change speed:</label>
+   <select name="speed" id="speed" />
+     <option value="1">Fast</option>
+     <option value="2">Medium</option>
+     <option value="3">Slow</option>
+   </select>
+   <p>Change how quickly the RSS Items will change in the display. </p>
+   </li>
+   <li><label for="anim">Select item change animation:</label>
+   <select name="anim" id="anim" />
+     <option value="1">Slide left</option>
+     <option value="2">Slide right</option>
+     <option value="3">Fade</option>
+     <option value="4">None</option>
+   </select>
+   <p>Change the animation between new items. </p>
+   </li>
+</ul>
+   
+<ul>
+   <li><input type="button" name="defaults" id="defaults" value="Reset to defaults"/></li>
+</ul>
  
  </form> 
  <script>
- 
 	function getSpeed( num ) {
-		if( num == 1 )
+		num = num * 1;
+		if( num === 1 ) {
 			return "Fast";
-		if( num == 2 )
+		}
+		if( num === 2 ) {
 			return "Medium";
+		}
 			
 		return "Slow";
 	}
- 
- 	var speedcurrent = document.getElementById( 'speedcurrent' );
+	function getAnim( num ) {
+		num = num * 1;
+		if( num === 1 ) {
+			return "Slide Left";
+		}
+		if( num === 2 ) {
+			return "Slide Right";
+		}
+		if( num === 3 ) {
+			return "Fade";
+		}
+			
+		return "None";
+	}
+	function setRssHtml( rss ) {
+		return '<a href="' + rss + '">' + rss + '</a>';
+	}
+	function setUrlHtml( url ) {
+		return '<a href="' + url + '">' + url + '</a>';
+	}
+	function setTitleHtml( tit ) {
+		if( tit == '' ) {
+			return 'BBC News';
+		}
+		else {
+			return 'BBC News - <b>' + tit + '</b>';
+		}
+	}
+	
 	var rsscurrent = document.getElementById( 'rsscurrent' );
 	var urlcurrent = document.getElementById( 'urlcurrent' );
 	var titlecurrent = document.getElementById( 'titlecurrent' );
+ 	var speedcurrent = document.getElementById( 'speedcurrent' );
+ 	var animcurrent = document.getElementById( 'animcurrent' );
  
-	var speed = document.getElementById( 'speed' );
 	var rss = document.getElementById( 'rss' );
 	var rssset = document.getElementById( 'rssset' );
 	var url = document.getElementById( 'url' );
 	var urlset = document.getElementById( 'urlset' );
 	var title = document.getElementById( 'title' );
 	var titleset = document.getElementById( 'titleset' );
+	var speed = document.getElementById( 'speed' );
+	var anim = document.getElementById( 'anim' );
 	
 	var defaults = document.getElementById( 'defaults' );
 	
 	// setup
+	if ( widget.preferences.rssFeed !== undefined ) {
+		rss.value = widget.preferences.rssFeed;
+		rsscurrent.innerHTML = setRssHtml( widget.preferences.rssFeed );
+	}
+	if ( widget.preferences.urlLink !== undefined ) {
+		url.value = widget.preferences.urlLink;
+		urlcurrent.innerHTML = setUrlHtml( widget.preferences.urlLink );
+	}
+	if ( widget.preferences.title !== undefined ) {
+		title.value = widget.preferences.title;
+		titlecurrent.innerHTML = setTitleHtml(widget.preferences.title);
+	}
 	if ( widget.preferences.changeSpeed !== undefined ) {
 		speed.value = widget.preferences.changeSpeed;
 		speedcurrent.innerHTML = getSpeed(widget.preferences.changeSpeed);
 	}
-	if ( widget.preferences.rssFeed !== undefined ) {
-		rss.value = widget.preferences.rssFeed;
-		rsscurrent.innerHTML = widget.preferences.rssFeed;
-	}
-	if ( widget.preferences.urlLink !== undefined ) {
-		url.value = widget.preferences.urlLink;
-		urlcurrent.innerHTML = widget.preferences.urlLink;
-	}
-	if ( widget.preferences.title !== undefined ) {
-		title.value = widget.preferences.title;
-		titlecurrent.innerHTML = widget.preferences.title;
+	if ( widget.preferences.animationType !== undefined ) {
+		anim.value = widget.preferences.animationType;
+		animcurrent.innerHTML = getAnim(widget.preferences.animationType);
 	}
 	
 	
 	// update
+	
+	rssset.addEventListener( 'click', function() {
+		widget.preferences.rssFeed = rss.value
+		rsscurrent.innerHTML = setRssHtml( widget.preferences.rssFeed );
+	}, false );
+	
+	urlset.addEventListener( 'click', function() {
+		widget.preferences.urlLink = url.value;
+		urlcurrent.innerHTML = 	setUrlHtml( widget.preferences.urlLink );
+	}, false );
+
+	titleset.addEventListener( 'click', function() {
+		widget.preferences.title = title.value;	
+		titlecurrent.innerHTML = setTitleHtml(widget.preferences.title);
+	}, false );
+	
 	speed.addEventListener( 'change', function() {
 		widget.preferences.changeSpeed = this.value;
 		speedcurrent.innerHTML = getSpeed(this.value);	
 	}, false );
 	
-	rssset.addEventListener( 'click', function() {
-		widget.preferences.rssFeed = rsscurrent.innerHTML = rss.value;
+	anim.addEventListener( 'change', function() {
+		widget.preferences.animationType = this.value;
+		animcurrent.innerHTML = getAnim(this.value);	
 	}, false );
 	
-	urlset.addEventListener( 'click', function() {
-		widget.preferences.urlLink = urlcurrent.innerHTML = url.value;	
-	}, false );
-
-	titleset.addEventListener( 'click', function() {
-		widget.preferences.title = titlecurrent.innerHTML = title.value;	
-	}, false );
 	
 	// Reset
 	defaults.addEventListener( 'click', function() {
 		if( confirm('Reset all values to their default?') ) {
 			widget.preferences.changeSpeed = speed.value = 2;
+			widget.preferences.animationType = anim.value = 1;
 			widget.preferences.rssFeed = rss.value = "http://feeds.bbci.co.uk/news/world/rss.xml";	
 			widget.preferences.urlLink = url.value = "http://www.bbc.co.uk/news/world/";	
 			widget.preferences.title = title.value = "World";
 		}	
 	}, false );	
+	
 </script>
  </div>
  
