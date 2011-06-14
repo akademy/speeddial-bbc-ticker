@@ -45,18 +45,14 @@ window.addEventListener( 'load', function() {
 	    	animObj.stop();
 	    }
 		
-    	debug( "Hide:Anim=" + animType );
         if( animType === anims.slide_left ) {
             animObj.addAnimation( 'left', '0px', move+'px' ); // Slide left
-			debug( "Hide: Slide left" + anims.slide_left );
         }
         if( animType === anims.slide_right) {
 			animObj.addAnimation( 'left', '0px', -move+'px'  ); // Slide right
-			debug( "Hide: Slide right" + anims.slide_right);
 		}
         if( animType !== anims.none ) {
 			animObj.addAnimation( 'opacity', '1.0', '0.0' );
-			debug( "Hide: Fade" + anims.fade + " " + anims.none );
 		}
         animObj.accelerationProfile = animObj.accelerate;
         animObj.speed = 12;
@@ -73,18 +69,13 @@ window.addEventListener( 'load', function() {
 	    	animObj.stop();
 	    }
     	
-    	debug( "Show:Anim = " + animType );
         if( animType === anims.slide_left) {		
 			animObj.addAnimation( 'left', '-'+move+'px', '0px' );// Slide left
-			debug( "Show:Slide left");
 		}
 		if( animType === anims.slide_right ) {
-			animObj.addAnimation( 'left', move+'px','0px' );// Slide right
-			debug( "Show:Slide right");
 		}
 		if( animType !== anims.none ) {
 			animObj.addAnimation( 'opacity', '0.0', '1.0' );
-			debug( "Show:Fade");
 		}
 	
 		animObj.accelerationProfile = animObj.decelerate;
@@ -118,11 +109,9 @@ window.addEventListener( 'load', function() {
 		    
 		    if( photoLarge ) {
 			    display += '<img class="img_lar" width="' + photoLarge.width + '" height="' + photoLarge.height + '" src="' + photoLarge.url + '"/>';
-			    //opera.postError( "L w:" + photoLarge.width + " h:" + photoLarge.height + " u:" + photoLarge.url );
 			 }
 		    if( photoSmall ) {
 			    display += '<img class="img_sma" width="' + photoSmall.width + '" height="' + photoSmall.height + '" src="' + photoSmall.url + '"/>';
-			    //opera.postError( "S w:" + photoSmall.width + " h:" + photoSmall.height + " u:" + photoSmall.url );
 			 }
 		    
 		    display += '<div class="title">' + getText( title ) + '</div>';
@@ -241,7 +230,7 @@ window.addEventListener( 'load', function() {
 			
 			_setWidth();
 			_setSections(size);
-		    _startSections(size);
+			_startSections(size);
 		
 			addEventListener( 'resize', _resizeHandler, false );
         	
@@ -364,8 +353,8 @@ window.addEventListener( 'load', function() {
 	    { 
 			// large view
 	      latestData = { min: 0, max: 0, current: -1, change: 0 };
-			previousData = { min: 1, max: 5, current: -1, change: 6000 * speed };
-			oldestData = { min: 6, max: feedCount-1, current: -1, change: 4000 * speed };
+			previousData = { min: 1, max: 4, current: -1, change: 6000 * speed };
+			oldestData = { min: 5, max: feedCount-1, current: -1, change: 4000 * speed };
 	    }
 	    else if ( size === 'big' ){
 	    	// big view		    	
@@ -411,7 +400,7 @@ window.addEventListener( 'load', function() {
 			// large view
 			changeLatest();
 			changePrevious();
-			stopOldestTimer();
+			changeOldest();
 	    }
 	    else if ( size === 'big' ){
 	    	// big view
