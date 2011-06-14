@@ -81,6 +81,9 @@ output#date {
 	left: 50%;
 	text-align: right;
 }
+.tiny output#date {
+    display: none;
+}
 output#clock {
 	left: 100%;
 	text-align: right;
@@ -256,7 +259,9 @@ article {
 	display: block;
 	font-size: 0.5em;
 }
-
+.small #latest .desc {
+	font-size: 0.6em;
+}
 .large #previous .desc {
 	color: black;
 }

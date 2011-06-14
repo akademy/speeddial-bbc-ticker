@@ -382,7 +382,8 @@ window.addEventListener( 'load', function() {
 			//oldestData = { min: 0, max: 0, current:0, change: 0 };
 		}
     }
-      function _updateTimers( size ) {
+    
+    function _updateTimers( size ) {
 		if( size === 'large' )
 	    { 
 			// large view
