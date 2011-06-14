@@ -20,4 +20,5 @@
 	
 	<preference name="changeSpeed" value="2" />
 	<preference name="animationType" value="1" />
+	<preference name="itemsType" value="1" />
 </widget>

@@ -38,6 +38,7 @@
  <tr><td><td><span></span>
  <tr><td>Speed <td><span id="speedcurrent"></span>
  <tr><td>Animation <td><span id="animcurrent"></span>
+ <tr><td>Items type<td><span id="typecurrent"></span>
  </tbody>
  </table>
  
@@ -84,6 +85,13 @@
    </select>
    <p>Change the animation between new items. </p>
    </li>
+   <li><label for="type">Select item type:</label>
+   <select name="type" id="type" />
+     <option value="1">Top rated (recommended)</option>
+     <option value="2">Latest</option>
+   </select>
+   <p>Top rated means show the items selected on the BBC web page as most significant, Latest items means show the most recent updates on the RSS feed. </p>
+   </li>
 </ul>
    
 <ul>
@@ -117,6 +125,13 @@
 			
 		return "None";
 	}
+	function getItemsType( type ) {
+		type = type * 1;
+		if( type === 1 ) {
+			return "Top rated";
+		}
+		return "Latest";
+	}
 	function setRssHtml( rss ) {
 		return '<a href="' + rss + '">' + rss + '</a>';
 	}
@@ -137,6 +152,7 @@
 	var titlecurrent = document.getElementById( 'titlecurrent' );
  	var speedcurrent = document.getElementById( 'speedcurrent' );
  	var animcurrent = document.getElementById( 'animcurrent' );
+ 	var typecurrent = document.getElementById( 'typecurrent' );
  
 	var rss = document.getElementById( 'rss' );
 	var rssset = document.getElementById( 'rssset' );
@@ -146,6 +162,7 @@
 	var titleset = document.getElementById( 'titleset' );
 	var speed = document.getElementById( 'speed' );
 	var anim = document.getElementById( 'anim' );
+	var type = document.getElementById( 'type' );
 	
 	var defaults = document.getElementById( 'defaults' );
 	
@@ -169,6 +186,10 @@
 	if ( widget.preferences.animationType !== undefined ) {
 		anim.value = widget.preferences.animationType;
 		animcurrent.innerHTML = getAnim(widget.preferences.animationType);
+	}
+	if ( widget.preferences.itemsType !== undefined ) {
+		type.value = widget.preferences.itemsType;
+		typecurrent.innerHTML = getItemsType(widget.preferences.itemsType);
 	}
 	
 	
@@ -199,10 +220,16 @@
 		animcurrent.innerHTML = getAnim(this.value);	
 	}, false );
 	
+	type.addEventListener( 'change', function() {
+		widget.preferences.itemsType = this.value;
+		typecurrent.innerHTML = getItemsType(this.value);	
+	}, false );
+	
 	
 	// Reset
 	defaults.addEventListener( 'click', function() {
-		if( confirm('Reset all values to their default?') ) {
+		if( confirm('Reset all values to their default?') ) {		
+			widget.preferences.itemsType = type.value = 1;		
 			widget.preferences.changeSpeed = speed.value = 2;
 			widget.preferences.animationType = anim.value = 1;
 			widget.preferences.rssFeed = rss.value = "http://feeds.bbci.co.uk/news/world/rss.xml";	

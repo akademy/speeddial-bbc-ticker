@@ -19,6 +19,7 @@ window.addEventListener( 'load', function() {
     
     var rssFeed = '';
     var urlLink = '';
+    var sortItems = false;
     
     var  speeds = {
 			fast : 1,
@@ -299,6 +300,10 @@ window.addEventListener( 'load', function() {
 			else if (event.key === 'animationType' && widget.preferences.animationType !== undefined ) {
 				updateAnim( widget.preferences.animationType );
 			}
+			else if (event.key === 'itemsType' && widget.preferences.itemsType !== undefined ) {
+				sortItems = !sortItems;
+				createFeed();
+			}
 			else if (event.key === 'rssFeed' && widget.preferences.rssFeed !== undefined ) {
 				createFeed();
 			}
@@ -465,7 +470,7 @@ window.addEventListener( 'load', function() {
 			rssFeed = widget.preferences.rssFeed;
 		}
 		
-		bbcFeed = new Feed( rssFeed, 'BBC News', 'News from the BBC', newPost, 5, parsers['generic'], feedMax );
+		bbcFeed = new Feed( rssFeed, 'BBC News', 'News from the BBC', newPost, 5, parsers['generic'], feedMax, sortItems );
 		bbcFeed.update();
     }
     
@@ -478,6 +483,15 @@ window.addEventListener( 'load', function() {
 	if (widget.preferences.animationType ) {
 		updateAnim( widget.preferences.animationType );
 	}
+	if (widget.preferences.itemsType ) {
+		if( widget.preferences.itemsType === 1 ) {
+			sortItems = false;
+		}
+		else {
+			sortItems = true;
+		}
+	}
+	
 	updateTitle();
 	updateUrl();
 
