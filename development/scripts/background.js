@@ -316,7 +316,7 @@ window.addEventListener( 'load', function() {
 	    else if ( size === 'big' ){
 	    	// big view		    	
 	      latestData = { min: 0, max: 2, current: -1, change: 6000 * speed };
-			previousData = { min: 1, max: feedCount-1, current: -1, change: 4000 * speed };
+			previousData = { min: 3, max: feedCount-1, current: -1, change: 4000 * speed };
 		
 			//oldestData = { min: 0, max: 0, current:0, change: 0 };
 	    }
