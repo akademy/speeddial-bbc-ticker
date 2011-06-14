@@ -14,8 +14,10 @@
     
    <icon src="images/icon.png"/>
     
-	<preference name="changeSpeed" value="2" />
 	<preference name="rssFeed" value="http://feeds.bbci.co.uk/news/world/rss.xml" />
 	<preference name="urlLink" value="http://www.bbc.co.uk/news/world/" />
 	<preference name="title" value="World" />
+	
+	<preference name="changeSpeed" value="2" />
+	<preference name="animationType" value="1" />
 </widget>
