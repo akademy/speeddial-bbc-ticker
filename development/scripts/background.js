@@ -1,7 +1,7 @@
 window.addEventListener( 'load', function() {
     var bbcFeed = null;
     var updateDate = null;
-    var feedMax = 10;
+    var feedMax = 12;
     var feedCount = 0;
     
     var debugging = true;
@@ -12,9 +12,10 @@ window.addEventListener( 'load', function() {
     
     var size = '';
     var width = -1;
-    var latestTimeout = -1;
-    var previousTimeout = -1;
-    var oldestTimeout = -1;
+    var stopped = -1;
+    var latestTimeout = stopped;
+    var previousTimeout = stopped;
+    var oldestTimeout = stopped;
     
     var rssFeed = '';
     var urlLink = '';
@@ -187,13 +188,15 @@ window.addEventListener( 'load', function() {
         change( '#latest article', latestData,  function() { startLatestTimer(); } );
     }
     function startLatestTimer() {
-    	latestTimeout = setTimeout( function () { changeLatest(); }, latestData.change );
+        if( latestTimeout === stopped ) {
+            latestTimeout = setTimeout( function () { changeLatest(); }, latestData.change );
+        }
     }
     function stopLatestTimer() {
     	if( latestTimeout > 0 ) {
     		clearTimeout( latestTimeout );
     	}
-    	latestTimeout = -1;
+    	latestTimeout = stopped;
     }
     
     function changePrevious() {
@@ -201,13 +204,15 @@ window.addEventListener( 'load', function() {
         change( '#previous article', previousData, function() { startPreviousTimer(); } );
     }
     function startPreviousTimer() {
-    	previousTimeout = setTimeout( function () { changePrevious(); }, previousData.change );
+        if( previousTimeout === stopped ) {
+            previousTimeout = setTimeout( function () { changePrevious(); }, previousData.change );
+        }
     }
     function stopPreviousTimer() {
     	if( previousTimeout > 0 ) {
     		clearTimeout( previousTimeout );
     	}
-    	previousTimeout = -1;
+    	previousTimeout = stopped;
     }
     
     function changeOldest() {
@@ -215,13 +220,15 @@ window.addEventListener( 'load', function() {
         change( '#oldest article', oldestData, function() { startOldestTimer(); } );
     }
     function startOldestTimer() {
-     	oldestTimeout = setTimeout( function () { changeOldest(); }, oldestData.change );
+        if( oldestTimeout === stopped ) {
+            oldestTimeout = setTimeout( function () { changeOldest(); }, oldestData.change );
+        }
     }
     function stopOldestTimer() {
     	if( oldestTimeout > 0 ) {
     		clearTimeout( oldestTimeout );
     	}
-    	oldestTimeout = -1;
+    	oldestTimeout = stopped;
     }
     
     function newPost(noChange, err) {
@@ -324,7 +331,7 @@ window.addEventListener( 'load', function() {
         if( oldSize !== size )
         {
         	_setSections( size );
-			_startSections( size );
+			_updateTimers( size );
 		}
     }
     
@@ -357,13 +364,13 @@ window.addEventListener( 'load', function() {
 	    { 
 			// large view
 	      latestData = { min: 0, max: 0, current: -1, change: 0 };
-			previousData = { min: 1, max: 3, current: -1, change: 6000 * speed };
-			oldestData = { min: 4, max: feedCount-1, current: -1, change: 4000 * speed };
+			previousData = { min: 1, max: 5, current: -1, change: 6000 * speed };
+			oldestData = { min: 6, max: feedCount-1, current: -1, change: 4000 * speed };
 	    }
 	    else if ( size === 'big' ){
 	    	// big view		    	
-	      latestData = { min: 0, max: 2, current: -1, change: 6000 * speed };
-			previousData = { min: 3, max: feedCount-1, current: -1, change: 4000 * speed };
+	      latestData = { min: 0, max: 4, current: -1, change: 6000 * speed };
+			previousData = { min: 5, max: feedCount-1, current: -1, change: 4000 * speed };
 		
 			//oldestData = { min: 0, max: 0, current:0, change: 0 };
 	    }
@@ -375,6 +382,27 @@ window.addEventListener( 'load', function() {
 			//oldestData = { min: 0, max: 0, current:0, change: 0 };
 		}
     }
+      function _updateTimers( size ) {
+		if( size === 'large' )
+	    { 
+			// large view
+			startLatestTimer();
+			startPreviousTimer();
+			startOldestTimer();
+	    }
+	    else if ( size === 'big' ){
+	    	// big view
+			startLatestTimer();
+			startPreviousTimer();
+			stopOldestTimer();
+	    }
+	    else {
+	    	// small view or tiny view
+			startLatestTimer();
+			stopPreviousTimer();
+			stopOldestTimer();
+		}
+    }
     
     function _startSections( size ) {
 		if( size === 'large' )
@@ -382,7 +410,7 @@ window.addEventListener( 'load', function() {
 			// large view
 			changeLatest();
 			changePrevious();
-			changeOldest();
+			stopOldestTimer();
 	    }
 	    else if ( size === 'big' ){
 	    	// big view
