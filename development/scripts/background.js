@@ -25,13 +25,13 @@ window.addEventListener( 'load', function() {
     var  speeds = {
 			fast : 1,
 			medium : 2,
-			slow : 3 }
+			slow : 3 };
     var speed = speeds.medium;
     var 	anims = {
 				slide_left : 1,
 				slide_right : 2,
 				fade : 3,
-				none: 4 }
+				none: 4 };
     var anim = anims.slide_left;
     
     function formatTime(time) {
@@ -164,7 +164,7 @@ window.addEventListener( 'load', function() {
     function next( data )  {
     	var newItem = data.current;
     	
-    	if( newItem === -1 || newItem + 1 > data.max) {
+    	if( newItem === -1 || newItem === data.max) {
     		newItem = data.min;
     	}
     	else {
@@ -241,11 +241,8 @@ window.addEventListener( 'load', function() {
             {
                 feedCount = bbcFeed.getItemList().length;
                 
-                _setWidth();
                 _setSections(size);
                 _startSections(size);
-            
-                addEventListener( 'resize', _resizeHandler, false );
                 
             }
         }
@@ -517,6 +514,13 @@ window.addEventListener( 'load', function() {
 	updateTitle();
 	updateUrl();
 
+    
+    _setWidth();
+    addEventListener( 'resize', _resizeHandler, false );
+    
 	createFeed();
    
 }, false);
+
+
+

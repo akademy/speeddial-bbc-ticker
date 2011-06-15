@@ -188,6 +188,15 @@ function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandler
 		return null;
 	}
 	
+	function getItemInternalTitle(title) {
+		for (var i = 0, item; item = itemList[i]; i++) {
+			if ( item.getTitle() == title ) { 
+				return item;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	* Set the callback function for when new items are received
 	* @arg newItemsCallback  Callback function to set
@@ -309,7 +318,7 @@ function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandler
 		var len = Math.min( tempList.length, maxItems );
 		for ( var i = 0; i < len; i++ ) {
 			var item = tempList[i];
-			if ( ! getItemInternal(item.getGUID()) ) {
+			if ( ! getItemInternal(item.getGUID()) || ! getItemInternalTitle(item.getTitle()) ) {
                 if( sortFeed ) {
                     itemList.push(item);
                 }
