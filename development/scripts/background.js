@@ -2,6 +2,7 @@ window.addEventListener( 'load', function() {
     var bbcFeed = null;
     var updateDate = null;
     var feedMax = 12;
+    var feedUpdate = 2; // Minutes
     var feedCount = 0;
     
     var debugging = true;
@@ -115,10 +116,15 @@ window.addEventListener( 'load', function() {
 		    if( photoSmall ) {
 			    display += '<img class="img_sma" width="' + photoSmall.width + '" height="' + photoSmall.height + '" src="' + photoSmall.url + '"/>';
 			 }
-		    
-		    display += '<div class="title">' + getText( title ) + '</div>';
+
+            display += '<div class="title">' + getText( title ) + '</div>';
 		    display += '<div class="desc">' + getText( description ) + '</div>';
-		    display += '<div class="time">' + time + '</div>';
+            if ( data.min === data.max ) {
+                display += '<div class="time">' + time + '</div>';
+            }
+            else {
+                display += '<div class="time">(' + ((number+1)-data.min) + '/' + (data.max-data.min+1) + ') ' + time + '</div>';
+            }
 
 	    	obj.innerHTML = display;
 	    	
@@ -180,7 +186,12 @@ window.addEventListener( 'load', function() {
     }
     function startLatestTimer() {
         if( latestTimeout === stopped ) {
-            latestTimeout = setTimeout( function () { changeLatest(); }, latestData.change );
+            if( latestData.change === 0 ) {
+                changeLatest();
+            }
+            else {
+                latestTimeout = setTimeout( function () { changeLatest(); }, latestData.change );
+            }
         }
     }
     function stopLatestTimer() {
@@ -225,19 +236,21 @@ window.addEventListener( 'load', function() {
     function newPost(noChange, err) {
     	debug( "Update feeds!" );
         
-        if( bbcFeed.getItemList().length > 0 )
-        {
-        	feedCount = bbcFeed.getItemList().length;
-			updateDate = new Date();
-			
-			_setWidth();
-			_setSections(size);
-			_startSections(size);
-		
-			addEventListener( 'resize', _resizeHandler, false );
-        	
+        if( !noChange ) {
+            if( bbcFeed.getItemList().length > 0 )
+            {
+                feedCount = bbcFeed.getItemList().length;
+                
+                _setWidth();
+                _setSections(size);
+                _startSections(size);
+            
+                addEventListener( 'resize', _resizeHandler, false );
+                
+            }
         }
         
+        updateDate = new Date();
         updateTitle();
     }
     
@@ -486,7 +499,7 @@ window.addEventListener( 'load', function() {
 			rssFeed = widget.preferences.rssFeed;
 		}
 		
-		bbcFeed = new Feed( rssFeed, 'BBC News', 'News from the BBC', newPost, 5, parsers['generic'], feedMax, sortItems );
+		bbcFeed = new Feed( rssFeed, 'BBC News', 'News from the BBC', newPost, feedUpdate, parsers['generic'], feedMax, sortItems );
 		bbcFeed.update();
     }
     

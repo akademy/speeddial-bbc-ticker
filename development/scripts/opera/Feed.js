@@ -310,7 +310,9 @@ function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandler
 		for ( var i = 0; i < len; i++ ) {
 			var item = tempList[i];
 			if ( ! getItemInternal(item.getGUID()) ) {
-				itemList.push(item);
+                if( sortFeed ) {
+                    itemList.push(item);
+                }
 				newItems = true;
 			}
 		}
@@ -320,12 +322,19 @@ function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandler
 			newItemsFunc(true);
 			return;
 		}
+
 		
 		if( sortFeed ) {
 			// Sort list of old items + #[maxItems] new items
 			itemList.sort(pubDateComparator);
 		}
-		
+		else {
+            // We aren't sorting the feeds, they are in the order defined in the RSS, so just replace.
+            itemList = [];
+            for ( var i = 0; i < len; i++ ) {
+                itemList.push( tempList[i] );
+            }
+        }
 		// Cut off excess items
 		cutItems();
 		
