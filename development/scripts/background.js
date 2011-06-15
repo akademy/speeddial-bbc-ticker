@@ -288,6 +288,18 @@ window.addEventListener( 'load', function() {
 		}
 	}
     
+    function updateItemsType() {
+        if ( widget.preferences.itemsType ) {
+            type = widget.preferences.itemsType * 1;
+            if( type === 1 ) {
+                sortItems = false;
+            }
+            else {
+                sortItems = true;
+            }
+        }
+    }
+    
     window.addEventListener( 'storage', function(event) {
 		debug( "Storage event: " + event.key + " " + event.oldValue + " " + event.newValue );
 		
@@ -301,7 +313,7 @@ window.addEventListener( 'load', function() {
 				updateAnim( widget.preferences.animationType );
 			}
 			else if (event.key === 'itemsType' && widget.preferences.itemsType !== undefined ) {
-				sortItems = !sortItems;
+				updateItemsType();
 				createFeed();
 			}
 			else if (event.key === 'rssFeed' && widget.preferences.rssFeed !== undefined ) {
@@ -337,6 +349,9 @@ window.addEventListener( 'load', function() {
         if(width > 400) {
         	size = 'large';
         }
+        else if( width > 310 ) {
+            size = 'bigger';
+        }
         else if (width > 250) {
         	size = 'big';
         }
@@ -361,7 +376,7 @@ window.addEventListener( 'load', function() {
 			previousData = { min: 1, max: 4, current: -1, change: 6000 * speed };
 			oldestData = { min: 5, max: feedCount-1, current: -1, change: 4000 * speed };
 	    }
-	    else if ( size === 'big' ){
+	    else if ( size === 'big' || size === 'bigger' ){
 	    	// big view		    	
 	      latestData = { min: 0, max: 4, current: -1, change: 6000 * speed };
 			previousData = { min: 5, max: feedCount-1, current: -1, change: 4000 * speed };
@@ -385,7 +400,7 @@ window.addEventListener( 'load', function() {
 			startPreviousTimer();
 			startOldestTimer();
 	    }
-	    else if ( size === 'big' ){
+	    else if ( size === 'big' || size === 'bigger' ){
 	    	// big view
 			startLatestTimer();
 			startPreviousTimer();
@@ -407,7 +422,7 @@ window.addEventListener( 'load', function() {
 			changePrevious();
 			changeOldest();
 	    }
-	    else if ( size === 'big' ){
+	    else if ( size === 'big' || size === 'bigger' ){
 	    	// big view
 			changeLatest();
 			changePrevious();
@@ -443,12 +458,12 @@ window.addEventListener( 'load', function() {
         	outputdate.innerHTML = formatTime(date) + '.' + formatTime(month);
         	outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins);
         }
-        else if( size === 'big' )
+        else if( size === 'big' || size === 'bigger' )
         {
         	outputdate.innerHTML = formatTime(date) + ' ' + monthsShort[month-1];
 	        outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins) + ':' + formatTime(secs);
 	    }
-        else
+        else // size === 'large'
         {
         	outputdate.innerHTML = formatTime(date) + ' ' + monthsFull[month-1] + ' ' + (year+1900);
 	        outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins) + ':' + formatTime(secs);
@@ -483,15 +498,8 @@ window.addEventListener( 'load', function() {
 	if (widget.preferences.animationType ) {
 		updateAnim( widget.preferences.animationType );
 	}
-	if (widget.preferences.itemsType ) {
-		if( widget.preferences.itemsType === 1 ) {
-			sortItems = false;
-		}
-		else {
-			sortItems = true;
-		}
-	}
-	
+
+	updateItemsType();
 	updateTitle();
 	updateUrl();
 

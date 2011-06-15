@@ -51,12 +51,12 @@ header {
 	font-size: 1em;
 }
 .large #mainname  { height: 18px; }
-.big header{
+.big header, .bigger header {
 	height: 10%;
 	min-height: 18px;
 	font-size: 0.85em;
 }
-.big #mainname  { height: 16px; }
+.big #mainname, .bigger #mainname { height: 16px; }
 .small header{
 	height: 10%;
 	min-height: 15px;
@@ -166,6 +166,16 @@ section {
 	border-top: 1px dotted #fff;
 	border-bottom: 1px dotted #505050;
 }
+.bigger #latest {
+	height: 75%;
+	font-size: 80%;
+}
+.bigger #previous {
+	top: 75%;
+	height: 25%;
+	display: table;
+	font-size: 50%;
+}
 
 .big #latest {
 	height: 75%;
@@ -177,7 +187,9 @@ section {
 	display: table;
 	font-size: 40%;
 }
-.big #oldest {
+
+.big #oldest, 
+.bigger #oldest {
 	display: none;
 }
 
@@ -186,16 +198,14 @@ section {
 	height: 100%;
 	font-size: 60%;
 }
-.small #previous,
-.small #oldest {
-	display: none;
-}
-
 .tiny #latest {
 	padding-top: 8px;
 	height: 100%;
 	font-size: 35%;
 }
+
+.small #previous,
+.small #oldest,
 .tiny #previous,
 .tiny #oldest {
 	display: none;
@@ -215,6 +225,7 @@ article {
 }
 
 .big #previous article,
+.bigger #previous article,
 #oldest article {	
 	vertical-align: middle;
 }
@@ -255,10 +266,12 @@ article {
 .large #latest .desc,
 .large #previous .desc,
 .big #latest .desc,
+.bigger #latest .desc,
 .small #latest .desc  {
 	display: block;
 	font-size: 0.5em;
 }
+.bigger #latest .desc,
 .small #latest .desc {
 	font-size: 0.6em;
 }
@@ -279,6 +292,11 @@ article {
 .large #latest .img_sma { display:none; }
 .large #previous .img_lar { display:none; }
 .large #previous .img_sma { display:block; }
+
+.bigger #latest .img_lar { display:block; }
+.bigger #latest .img_sma { display:none; }
+.bigger #previous .img_lar { display:none; }
+.bigger #previous .img_sma { display:none; }
 
 .big #latest .img_lar { display:none; }
 .big #latest .img_sma { display:block; padding-top: 3px;}
