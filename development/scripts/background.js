@@ -73,6 +73,7 @@ window.addEventListener( 'load', function() {
 			animObj.addAnimation( 'left', '-'+move+'px', '0px' );// Slide left
 		}
 		if( animType === anims.slide_right ) {
+            animObj.addAnimation( 'left', move+'px','0px' );// Slide right
 		}
 		if( animType !== anims.none ) {
 			animObj.addAnimation( 'opacity', '0.0', '1.0' );
