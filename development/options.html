@@ -4,9 +4,9 @@
   <title>Options</title>
   <style>
   	body { background-color: #fff; font-family: "Arial", "Helmet", "Freesans", sans-serif; }
-  	h1 { font-size: 1em; color: white; background-color: #900; padding: 10px; margin:0px 0px 10px 0px;  }
-  	h1 img { padding-right: 10px; }
-  	h1 span { vertical-align:middle; }
+  	header { font-size: 1em; color: white; background-color: ; padding: 10px; vertical-align:middle; }
+  	header { background: #900 url(images/icon.png) no-repeat scroll 10px 10px; padding-left: 85px; height: 65px; }
+  	h1 { margin: 10px 0;padding:0;vertical-align:middle;display: block; }
   	
   	table { font-size: 0.7em;}
   	tr { margin: 0; padding: 0px; }
@@ -20,25 +20,30 @@
   	input[type=button] { min-width: 50px; }
   	label { width: 100px; }
   	li p { font-size: smaller;}
+  	
+   a:visited.jumpdown,a.jumpdown { text-decoration: none; color: #44f; font-size: 10px;}
+   a:visited.jumpup,a.jumpup { text-decoration: none; color: #44f; text-align:right; font-size: 10px; padding: 10px; display:block;}
+   a:visited.jumpup:before,a.jumpup:before,a:visited.jumpdown:before,a.jumpdown:before { content: "("; }
+   a:visited.jumpup:after,a.jumpup:after,a:visited.jumpdown:after,a.jumpdown:after { content: ")"; }
   </style>
  </head>
  <body>
  
  <div id="wrapper"> 
- <h1><img src="images/icon.png"/><span>BBC Ticker Options</span></h1>
+ <header><h1>BBC Ticker Options</h1></header>
  <p>Here's your current settings:</p>
- <table>
+ <table id="current">
  <thead>
  <tr><td>Setting<td>Current
  </thead>
  <tbody>
- <tr><td>RSS <td><span id="rsscurrent"></span>
- <tr><td>URL <td><span id="urlcurrent"></span>
- <tr><td>Title <td><span id="titlecurrent"></span>
+ <tr><td>RSS <td><span id="rsscurrent"></span> &nbsp; <a class="jumpdown" href="#rsschange">edit</a>
+ <tr><td>URL <td><span id="urlcurrent"></span> &nbsp; <a class="jumpdown" href="#urlchange">edit</a>
+ <tr><td>Title <td><span id="titlecurrent"></span> &nbsp; <a class="jumpdown" href="#titlechange">edit</a>
  <tr><td><td><span></span>
- <tr><td>Speed <td><span id="speedcurrent"></span>
- <tr><td>Animation <td><span id="animcurrent"></span>
- <tr><td>Items type<td><span id="typecurrent"></span>
+ <tr><td>Speed <td><span id="speedcurrent"></span> &nbsp; <a class="jumpdown" href="#speedchange">edit</a>
+ <tr><td>Animation <td><span id="animcurrent"></span> &nbsp; <a class="jumpdown" href="#animchange">edit</a>
+ <tr><td>Items type<td><span id="typecurrent"></span> &nbsp; <a class="jumpdown" href="#typechange">edit</a>
  </tbody>
  </table>
  
@@ -47,36 +52,40 @@
  
  <ul>
 	<li><h3>News settings</h3></li>
-   <li><label for="rss">Select RSS feed:</label>
+   <li id="rsschange"><label for="rss">Select RSS feed:</label>
    <input type="text" name="rss" id="rss" value="" />
    <input type="button" name="rssset" id="rssset" value="set"/>
    <p>Set the RSS which will be shown, must have a main address of "bbc.co.uk" or "bbci.co.uk"<br/>
    e.g. http://feeds.<b>bbci.co.uk</b>/news/world/rss.xml or http://www.<b>bbc.co.uk</b>/turkce/index.xml</p>
+   <a class="jumpup" href="#current">back</a>
    </li>
-   <li><label for="url">Select speeddial link:</label>
+   <li id="urlchange"><label for="url">Select speeddial link:</label>
    <input type="text" name="url" id="url" value="" />
    <input type="button" name="urlset" id="urlset" value="set"/>
    <p>Set the link that is triggered when the speed dial is pressed, this can be any URL.<br/>
     e.g.: http://www.bbc.co.uk/news/world/ or http://www.bbc.co.uk/turkce/ or http://www.facebook.com/BringBackFirefly</p>
+   <a class="jumpup" href="#current">back</a>
    </li>
-   <li><label for="title">Select speeddial title:</label>
+   <li id="titlechange"><label for="title">Select speeddial title:</label>
    <input type="text" name="title" id="title" value="" />
    <input type="button" name="titleset" id="titleset" value="set"/>
-   <p>Append to speed dial title "BBC News"<br/>
-    e.g.: "World" to make "BBC News - World" </p>
+   <p>Append after the speeddial title "BBC News"<br/>
+    e.g.: set "World" to make "BBC News - World" </p>
+   <a class="jumpup" href="#current">back</a>
    </li>
 </ul>
 <ul>
 	<li><h3>Display settings</h3></li>
-   <li><label for="speed">Select item change speed:</label>
+   <li id="speedchange"><label for="speed">Select item change speed:</label>
    <select name="speed" id="speed" />
      <option value="1">Fast</option>
      <option value="2">Medium</option>
      <option value="3">Slow</option>
    </select>
    <p>Change how quickly the RSS Items will change in the display. </p>
+   <a class="jumpup" href="#current">back</a>
    </li>
-   <li><label for="anim">Select item change animation:</label>
+   <li id="animchange"><label for="anim">Select item change animation:</label>
    <select name="anim" id="anim" />
      <option value="1">Slide left</option>
      <option value="2">Slide right</option>
@@ -84,13 +93,15 @@
      <option value="4">None</option>
    </select>
    <p>Change the animation between new items. </p>
+   <a class="jumpup" href="#current">back</a>
    </li>
-   <li><label for="type">Select item type:</label>
+   <li id="typechange"><label for="type">Select item type:</label>
    <select name="type" id="type" />
      <option value="1">Top rated (recommended)</option>
      <option value="2">Latest</option>
    </select>
    <p>Top rated means show the items selected on the BBC web page as most significant, Latest items means show the most recent updates on the RSS feed. </p>
+   <a class="jumpup" href="#current">back</a>
    </li>
 </ul>
    
@@ -240,6 +251,7 @@
 	
 </script>
  </div>
- 
+ <br/><br/><br/><br/><br/><br/><br/>
+ <footer>Thanks for using this software! www.akademy.co.uk</footer>
  </body>
 </html>

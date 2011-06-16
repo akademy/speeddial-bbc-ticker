@@ -2,10 +2,10 @@ window.addEventListener( 'load', function() {
     var bbcFeed = null;
     var updateDate = null;
     var feedMax = 12;
-    var feedUpdate = 2; // Minutes
+    var feedUpdate = 5; // Minutes
     var feedCount = 0;
     
-    var debugging = true;
+    var debugging = false;
     
     var latestData = {};
     var previousData = {};
