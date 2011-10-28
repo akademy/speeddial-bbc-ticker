@@ -448,17 +448,18 @@ window.addEventListener( 'load', function() {
     }
     
     // Get and display the current time every 500 milliseconds
-    var timer = window.setInterval(function() {
-      var outputdate = document.querySelector('output#date');
+    var monthsShort = ['Jan','Feb','March','April','May','June','July','August','Sept','Oct','Nov','Dec'];
+	var monthsFull = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    
+    var timer = window.setInterval( function() {
+        var outputdate = document.querySelector('output#date');
 		var outputclock = document.querySelector('output#clock');
 		var date, year, month, da, hours, mins, secs;
-		
-		monthsShort = ['Jan','Feb','March','April','May','June','July','August','Sept','Oct','Nov','Dec'];
-		monthsFull = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        datetime = new Date();
+        
+        var datetime = new Date();
 		
         year = datetime.getYear();
-        month = datetime.getMonth();
+        month = datetime.getMonth() + 1;
         date = datetime.getDate();
         hours = datetime.getHours();
         mins = datetime.getMinutes();
