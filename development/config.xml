@@ -8,9 +8,7 @@
         <param name="url" value="http://www.bbc.co.uk/news/world/"/>
     </feature> 
     
-    <access origin="http://bbc.co.uk" subdomains="true"/>
-    <access origin="http://bbci.co.uk" subdomains="true"/>
-    <access origin="http://bbcimg.co.uk" subdomains="true"/>
+   <access origin="*" subdomains="true"/>
     
    <icon src="images/icon.png"/>
     

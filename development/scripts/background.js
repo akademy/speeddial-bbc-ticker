@@ -255,11 +255,15 @@ window.addEventListener( 'load', function() {
     {
     	if (opera.contexts.speeddial) {
     	
-			var title = 'BBC News';
+			var title = '';
 			
 			if (widget.preferences.title !== undefined && widget.preferences.title !== '' ) {
-				title += " - " + widget.preferences.title;
+				title += widget.preferences.title;
 			}
+			
+			if( title !== '' )
+				title += " - ";
+			title += 'BBC News';
 			
 			if( bbcFeed && bbcFeed.getItemList().length > 0 )
 			{
