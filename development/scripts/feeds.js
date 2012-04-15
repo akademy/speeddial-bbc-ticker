@@ -92,14 +92,93 @@ var feeds_region = {
 // http://www.bbc.co.uk/worldservice/languages/index.shtml
 var feeds_language = {
 	names : [
-		"Arabic"
+		"Arabic",
+		"Azeri",
+		"Bangla",
+		"Burmese",
+		"Chinese",
+		"French",
+		"Hausa",
+		"Hindi",
+		"Indonesia",
+		/*"Kinyarwanda",
+		"Kirundi",*/
+		"Kyrgyz",
+		"Nepali",
+		"Pashto",
+		"Persian",
+		"Portuguese",
+		"Russian",
+		"Sinhala",
+		"Somali",
+		"Spanish",
+		"Swahili",
+		"Tamil",
+		"Turkish",
+		"Ukrainian",
+		"Urdu",
+		"Uzbek",
+		"Vietnamese"
 	],
+
 	feeds : [
-		"http://www.bbc.co.uk/arabic/index.xml"
+		"http://www.bbc.co.uk/arabic/index.xml",
+		"http://www.bbc.co.uk/azeri/index.xml",
+		"http://www.bbc.co.uk/bengali/index.xml",
+		"http://www.bbc.co.uk/burmese/index.xml",
+		"http://www.bbc.co.uk/zhongwen/simp/index.xml",
+		"http://www.bbc.co.uk/afrique/index.xml",
+		"http://www.bbc.co.uk/hausa/index.xml",
+		"http://www.bbc.co.uk/hindi/index.xml",
+		"http://www.bbc.co.uk/indonesia/index.xml",
+		/*"http://www.bbc.co.uk/gahuza/index.xml",
+		"http://www.bbc.co.uk/gahuza/index.xml",*/
+		"http://www.bbc.co.uk/kyrgyz/index.xml",
+		"http://www.bbc.co.uk/nepali/index.xml",
+		"http://www.bbc.co.uk/pashto/index.xml",
+		"http://www.bbc.co.uk/persian/index.xml",
+		"http://www.bbc.co.uk/portuguese/index.xml",
+		"http://wsrss.bbc.co.uk/russian/index.xml",
+		"http://www.bbc.co.uk/sinhala/index.xml",
+		"http://www.bbc.co.uk/somali/index.xml",
+		"http://www.bbc.co.uk/mundo/index.xml",
+		"http://www.bbc.co.uk/swahili/index.xml",
+		"http://www.bbc.co.uk/tamil/index.xml",
+		"http://www.bbc.co.uk/turkce/index.xml",
+		"http://www.bbc.co.uk/ukrainian/index.xml",
+		"http://www.bbc.co.uk/urdu/index.xml",
+		"http://www.bbc.co.uk/uzbek/index.xml",
+		"http://www.bbc.co.uk/vietnamese/index.xml"
 	],
 	
 	urls : [
-		"http://www.bbc.co.uk/arabic/"
+		"http://www.bbc.co.uk/arabic/",
+		"http://www.bbc.co.uk/azeri/",
+		"http://www.bbc.co.uk/bengali/",
+		"http://www.bbc.co.uk/burmese/",
+		"http://www.bbc.co.uk/zhongwen/simp/",
+		"http://www.bbc.co.uk/afrique/",
+		"http://www.bbc.co.uk/hausa/",
+		"http://www.bbc.co.uk/hindi/",
+		"http://www.bbc.co.uk/indonesia/",
+		/*"http://www.bbc.co.uk/gahuza/",
+		"http://www.bbc.co.uk/gahuza/",*/
+		"http://www.bbc.co.uk/kyrgyz/",
+		"http://www.bbc.co.uk/nepali/",
+		"http://www.bbc.co.uk/pashto/",
+		"http://www.bbc.co.uk/persian/",
+		"http://www.bbc.co.uk/portuguese/",
+		"http://www.bbc.co.uk/russian/",
+		"http://www.bbc.co.uk/sinhala/",
+		"http://www.bbc.co.uk/somali/",
+		"http://www.bbc.co.uk/mundo/",
+		"http://www.bbc.co.uk/swahili/",
+		"http://www.bbc.co.uk/tamil/",
+		"http://www.bbc.co.uk/turkce/",
+		"http://www.bbc.co.uk/ukrainian/",
+		"http://www.bbc.co.uk/urdu/",
+		"http://www.bbc.co.uk/uzbek/",
+		"http://www.bbc.co.uk/vietnamese/"
 	]
 	
 };
