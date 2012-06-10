@@ -108,6 +108,8 @@ window.addEventListener( 'load', function() {
 	    	var photoLarge = feed.getLargePhoto();
 	    	var photoSmall = feed.getSmallPhoto();
 	    	
+	    	var feedUrl = feed.getLink();
+
 		    var display = '';
 		    
 		    if( photoLarge ) {
@@ -126,6 +128,10 @@ window.addEventListener( 'load', function() {
                 display += '<div class="time">(' + ((number+1)-data.min) + '/' + (data.max-data.min+1) + ') ' + time + '</div>';
             }
 
+	    	if( size === 'small' || size === 'tiny' ) {
+	    		updateSpeeddialLink( feedUrl );
+	    	}
+	    	
 	    	obj.innerHTML = display;
 	    	
 	    	animObj = animationShow( obj, move, animType );
@@ -160,7 +166,7 @@ window.addEventListener( 'load', function() {
     	return maybeText;
     	
     }
-    
+
     function next( data )  {
     	var newItem = data.current;
     	
@@ -175,6 +181,12 @@ window.addEventListener( 'load', function() {
 		    	
     	return newItem;
     }
+
+	function _getItemNumber( data ) {
+		if( data.current === -1 )
+			return data.min;
+		return data.current;
+	}	
     
     function haveNext( data ) {
     	return data.max !== data.min;
@@ -283,9 +295,12 @@ window.addEventListener( 'load', function() {
     {
     	if (opera.contexts.speeddial) {
     		if( widget.preferences.urlLink ) {
-				opera.contexts.speeddial.url = widget.preferences.urlLink;
+				updateSpeeddialLink( widget.preferences.urlLink );
 			}
 		}
+    }
+    function updateSpeeddialLink( link ) {
+    	opera.contexts.speeddial.url = link;
     }
 	function updateAnim( num ) {
 		num = num * 1;
@@ -345,16 +360,22 @@ window.addEventListener( 'load', function() {
         
 	}, false );
     
-    function _resizeHandler() {
-        var oldSize = size;
-        _setWidth();
+	function _resizeHandler() {
+		var oldSize = size;
+		_setWidth();
         
-        if( oldSize !== size )
-        {
-        	_setSections( size );
+		if( oldSize !== size ) {
+			_setSections( size );
 			_updateTimers( size );
+
+			
+			updateUrl();
+	    	if( size === 'small' || size === 'tiny' ) {
+	    		var feed = bbcFeed.getItemList()[_getItemNumber(latestData)];
+	    		updateSpeeddialLink( feed.getLink() );
+	    	}
 		}
-    }
+	}
     
     function _setWidth() {
     		bodyElement = document.getElementsByTagName('body')[0];
@@ -378,7 +399,7 @@ window.addEventListener( 'load', function() {
         }
 			
 			bodyElement.className = size;
-			debug( "Size: " + size + " (" + width + ")" );
+			//debug( "Size: " + size + " (" + width + ")" );
 			
         return width;
     }

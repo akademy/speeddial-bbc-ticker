@@ -16,6 +16,8 @@
   	header { font-size: 1em; color: white; padding: 10px; vertical-align:middle; }
   	header { background: #900 url(images/icon.png) no-repeat scroll 10px 10px; padding-left: 85px; height: 65px; }
   	h1 { margin: 10px 0;padding:0;vertical-align:middle;display: block; }
+
+	#quickset select { display: inline-block; float: left; margin: 0 auto; }
   	
   	table { font-size: 0.7em;}
   	tr { margin: 0; padding: 0px; }
@@ -35,7 +37,7 @@
    a:visited.jumpup:before,a.jumpup:before,a:visited.jumpdown:before,a.jumpdown:before { content: "("; }
    a:visited.jumpup:after,a.jumpup:after,a:visited.jumpdown:after,a.jumpdown:after { content: ")"; }
    
-   footer { text-align: center; background-color:white;color: black; }
+   footer { text-align: center; background-color:white; color: black; padding:5px; }
    footer a { color: #88F; }
 
 	#gen { float:right; margin: 10px; font-size:smaller; padding: 3px; }
@@ -53,12 +55,13 @@
 	 <header>
 		 <h1>BBC Ticker Options</h1>
 	 </header>
-	<div id="gen">
+	 <div id="gen">
 		<a href="#generous">Feeling Generous?</a>
 	 </div>
 
-	 <section>
+	 <section id="quickset">
 	 	<h2>Quick set</h2>
+	 	<p>Choose an option from one of these dropdowns to automatically select a news feed:</p>
 			<select name="quick_select_subject" id="quick_select_subject" />
 				<script type="text/javascript">
 					document.write( '<option value="' + ignore + '">Select a subject</option>' );
@@ -82,14 +85,16 @@
 			
 			<select name="quick_select_language" id="quick_select_language" />
 				<script type="text/javascript">
-					document.write( '<option value="' + ignore + '">Select a language</option>' );
+					document.write( '<option value="' + ignore + '">Select a region (Other languages)</option>' );
 					var i = 0;
 					for(; i < feeds_language.names.length; i++ ) {
 						document.write( '<option value="' + feeds_language.names[i] + '">' + feeds_language.names[i] + '</option>' );
 					}
 				</script>
 			  
-			</select>			
+			</select>
+			<br style="clear:both;"/>
+			<p>Or set your own values below.</p>
 	 </section>
 	 
 	 <section>
@@ -191,7 +196,7 @@
 	<a href="http://www.akademy.co.uk/me/donate.php"><img src="images/21748w2cktoxjsp.jpg" width="100px;"/></a>
 	<br/><br/> Visit my website for other cool things: <a href="http://www.akademy.co.uk">www.akademy.co.uk</a>. And here's a few more of my <a href="">Opera Extensions</a>.
 	 <br/><br/> 
-	 Note that this extension is not endorsed by the BBC! Enjoy it till they find out!
+	 Note that this extension is not endorsed by the BBC, but thanks anyway.
 <br/><br/>
 <a href="http://www.freedigitalphotos.net/images/view_photog.php?photogid=905">Image: Pixomar / FreeDigitalPhotos.net</a>
  </footer>

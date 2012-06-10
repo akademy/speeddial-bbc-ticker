@@ -138,7 +138,7 @@ section {
 }
 #oldest {
 	/*background-image: -o-linear-gradient(#e1e1e1,#d1d1d1);*/
-	background-color: #eee;
+	background-color: #fff;
 	color: #505050;
 }
 
@@ -162,7 +162,7 @@ section {
 	height: 19%;
 	display: table;
 	font-size: 55%;
-	border-top: 1px dotted #fff;
+	border-top: 1px dotted #900;
 	border-bottom: 1px dotted #505050;
 }
 .bigger #latest {
@@ -287,7 +287,7 @@ article {
 .img_lar { max-height: 81px; padding-top: 0px;}
 .img_sma { max-height: 49px; }
 
-.large #latest .img_lar { display:block; }
+.large #latest .img_lar { display:block; margin:5px; }
 .large #latest .img_sma { display:none; }
 .large #previous .img_lar { display:none; }
 .large #previous .img_sma { display:block; }

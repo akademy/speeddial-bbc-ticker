@@ -118,7 +118,7 @@ function rssPattern(item, isHTML) {
 	}
 	
 		var links = item.getElementsByTagName('link');
-	var link = null;
+	//var link = null;
 
 	
 	var photos = item.getElementsByTagName('thumbnail');
