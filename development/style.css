@@ -292,7 +292,7 @@ article {
 .large #previous .img_lar { display:none; }
 .large #previous .img_sma { display:block; }
 
-.bigger #latest .img_lar { display:block; }
+.bigger #latest .img_lar { display:block; margin:5px; }
 .bigger #latest .img_sma { display:none; }
 .bigger #previous .img_lar { display:none; }
 .bigger #previous .img_sma { display:none; }
