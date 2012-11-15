@@ -331,3 +331,12 @@ article {
     font-size: 1em;
   }
 }
+
+@keyframes sliderightout {
+	from { left: 0; opacity:1;-o-transform: scale(0.25); }
+	to { left: 50px; opacity:0; -o-transform: scale(1);}
+}
+@keyframes sliderightin {
+	from { left: -50px; opacity:0; -o-transform: scale(1);}
+	to { left: 0px; opacity:1; -o-transform: scale(0.25);}
+}

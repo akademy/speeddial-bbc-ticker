@@ -1,11 +1,14 @@
+
+
 window.addEventListener( 'load', function() {
+
     var bbcFeed = null;
     var updateDate = null;
     var feedMax = 12;
     var feedUpdate = 5; // Minutes
     var feedCount = 0;
     
-    var debugging = false;
+    var debugging = true;
     
     var latestData = {};
     var previousData = {};
@@ -32,15 +35,21 @@ window.addEventListener( 'load', function() {
 				slide_right : 2,
 				fade : 3,
 				none: 4 };
-    var anim = anims.slide_left;
+    var anim = anims.slide_left;  
     
     function formatTime(time) {
 		    return (time < 10) ? '0' + time : time;
 		}
     
     function animationHide( animObj, move, animType ) {
-	    
-	    if( !animObj.checkRun ) {
+		
+		animObj.style.setProperty( "animation-name","sliderightout" )
+	    	animObj.style.setProperty( "animation-fill-mode","forwards" )
+		animObj.style.setProperty( "animation-duration","2s" )
+		
+		//debug( "animation-duration=" + animObj.style.getPropertyValue( "animation-duration" ) )
+		
+	    /*if( !animObj.checkRun ) {
 	    	animObj = animObj.createAnimation();
 	    }
 	    else if( animObj.checkRun() ) {
@@ -58,13 +67,32 @@ window.addEventListener( 'load', function() {
 		}
         animObj.accelerationProfile = animObj.accelerate;
         animObj.speed = 12;
-        
+        */
+	  
         return animObj;
     }
     
     function animationShow( animObj, move, animType ) {
 	    
-	    if( !animObj.checkRun ) {
+	    	animObj.style.setProperty( "animation-name","sliderightin" )
+	    	animObj.style.setProperty( "animation-fill-mode","forwards" )
+		animObj.style.setProperty( "animation-duration","2s" )
+	    
+	    /*
+	    Specify an animation:
+	    var cssAnimation = document.createElement('style');
+		cssAnimation.type = 'text/css';
+		var rules = document.createTextNode('@-webkit-keyframes slider {'+
+		'from { left:100px; }'+
+		'80% { left:150px; }'+
+		'90% { left:160px; }'+
+		'to { left:150px; }'+
+		'}');
+		cssAnimation.appendChild(rules);
+		document.getElementsByTagName("head")[0].appendChild(cssAnimation);
+	    */
+	    
+	   /* if( !animObj.checkRun ) {
 	    	animObj = animObj.createAnimation();
 	    }
 	    else if( animObj.checkRun() ) {
@@ -82,12 +110,78 @@ window.addEventListener( 'load', function() {
 		}
 	
 		animObj.accelerationProfile = animObj.decelerate;
-		animObj.speed = 6; 
+		animObj.speed = 6; */
         
         return animObj;
     }
     
     function change( objId, data, timerFunction )
+    {
+		var obj = document.querySelector( objId );
+		var move = width;
+		var animType = anim;    
+
+		animHideEnd =function() {
+			var number = next( data );
+			var feed = bbcFeed.getItemList()[number];
+		    
+			var pubed = feed.getDate();
+			
+			var title = feed.getTitle();
+			var time = formatTime(pubed.getHours()) + ':' + formatTime(pubed.getMinutes());
+			var description = feed.getDesc();
+			var photoLarge = feed.getLargePhoto();
+			var photoSmall = feed.getSmallPhoto();
+			
+			var feedUrl = feed.getLink();
+
+			    var display = '';
+			    
+			    if( photoLarge ) {
+				    display += '<img class="img_lar" width="' + photoLarge.width + '" height="' + photoLarge.height + '" src="' + photoLarge.url + '"/>';
+				 }
+			    if( photoSmall ) {
+				    display += '<img class="img_sma" width="' + photoSmall.width + '" height="' + photoSmall.height + '" src="' + photoSmall.url + '"/>';
+				 }
+
+			display += '<div class="title">' + getText( title ) + '</div>';
+			    display += '<div class="desc">' + getText( description ) + '</div>';
+			    
+			if ( data.min === data.max ) {
+			    display += '<div class="time">' + time + '</div>';
+			}
+			else {
+			    display += '<div class="time">(' + ((number+1)-data.min) + '/' + (data.max-data.min+1) + ') ' + time + '</div>';
+			}
+
+			if( size === 'small' || size === 'tiny' ) {
+				updateSpeeddialLink( feedUrl );
+			}
+			
+			obj.innerHTML = display;
+			
+			obj.removeEventListener( "animationend", animHideEnd );
+			animObj = animationShow( obj, move, animType );
+			
+			/*if( haveNext( data ) ) {
+				animObj.onfinsh = function() {
+					timerFunction();
+					debug( "Starting timer" );
+				}   
+			}*/
+			
+			//animObj.run();
+			
+			if( haveNext( data ) ) {
+				timerFunction();
+			}
+		};
+		
+		obj.addEventListener( "animationend", animHideEnd, false );
+		
+		var animObj = animationHide( obj, move, animType ); 
+	}
+    function change2( objId, data, timerFunction )
     {
 	    var obj = document.querySelector( objId );
 	    var move = width;
@@ -509,7 +603,7 @@ window.addEventListener( 'load', function() {
    
    function debug( mess ) {
    		if( debugging ) {
-   			opera.postError( mess );
+   			opera.postError( "TICKER-DEBUG: [" + mess + "]" );
         }
    }
    
@@ -529,6 +623,8 @@ window.addEventListener( 'load', function() {
 	// 
 	// Begin
 	//
+	debug( "************************** BBBEEEGGGIIINNN *************************************" );
+	
 	if (widget.preferences.changeSpeed ) {
 		speed = widget.preferences.changeSpeed;
 	}
