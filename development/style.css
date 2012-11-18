@@ -164,6 +164,7 @@ section {
 	font-size: 55%;
 	border-top: 1px dotted #900;
 	border-bottom: 1px dotted #505050;
+	visibility:shown;
 }
 .bigger #latest {
 	height: 75%;
@@ -174,6 +175,7 @@ section {
 	height: 25%;
 	display: table;
 	font-size: 50%;
+	visibility:shown;
 }
 
 .big #latest {
@@ -185,11 +187,13 @@ section {
 	height: 25%;
 	display: table;
 	font-size: 40%;
+	visibility:shown;
 }
 
 .big #oldest, 
 .bigger #oldest {
-	display: none;
+	visibility:hidden;
+	/*display: none;*/
 }
 
 .small #latest {
@@ -207,7 +211,8 @@ section {
 .small #oldest,
 .tiny #previous,
 .tiny #oldest {
-	display: none;
+	/*display: none;*/
+	visibility:hidden;
 }
 
 article {
