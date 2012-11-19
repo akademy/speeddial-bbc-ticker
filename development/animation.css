@@ -1,31 +1,69 @@
 @keyframes slide_right_hide {
-	from { left: 0; opacity:1; }
-	to { left: 50px; opacity:0; }
+	from { 
+		left: 0; 
+		opacity:1;
+		animation-timing-function: ease-out;
+	}
+	to {
+		left: 50px;
+		opacity:0;
+	}
 }
 
 @keyframes slide_right_show {
-	from { left: -50px; opacity:0; }
-	to { left: 0px; opacity:1; }
+	from {
+		left: -50px;
+		opacity:0;
+		animation-timing-function: ease-in;
+	}
+	to {
+		left: 0px;
+		opacity:1;
+	}
 }
 
 @keyframes slide_left_hide {
-	from { right: 0; opacity:1; }
-	to { right: 50px; opacity:0; }
+	from { 
+		right: 0; 
+		opacity:1;
+		animation-timing-function: ease-out;
+	}
+	to { 
+		right: 50px;
+		opacity:0;
+	}
 }
 
 @keyframes slide_left_show {
-	from { right: -50px; opacity:0; }
-	to { right: 0px; opacity:1; }
+	from { 
+		right: -50px;
+		opacity:0;
+		animation-timing-function: ease-in;
+	}
+	to { 
+		right: 0px; 
+		opacity:1;
+	}
 }
 
 @keyframes fade_hide {
-	from { opacity:1; }
-	to { opacity:0; }
+	from { 
+		opacity:1;
+		animation-timing-function: ease-out;
+	}
+	to { 
+		opacity:0;
+	}
 }
 
 @keyframes fade_show {
-	from { opacity:0; }
-	to { opacity:1; }
+	from { 
+		opacity:0;
+		animation-timing-function: ease-in;
+	}
+	to { 
+		opacity:1;
+	}
 }
 
 @keyframes no_anim_hide {

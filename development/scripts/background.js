@@ -62,6 +62,8 @@ window.addEventListener( 'load', function() {
 	    	
 		if( animType == anims.none )
 			animObj.style.setProperty( "animation-duration","0.2s" );
+		else if( animType == anims.fade )
+			animObj.style.setProperty( "animation-duration","0.5s" );
 		else
 			animObj.style.setProperty( "animation-duration","1s" );
 	  
@@ -86,6 +88,8 @@ window.addEventListener( 'load', function() {
 	    	
 	    	if( animType == anims.none )
 			animObj.style.setProperty( "animation-duration","0.2s" );
+		else if( animType == anims.fade )
+			animObj.style.setProperty( "animation-duration","0.5s" );
 		else
 			animObj.style.setProperty( "animation-duration","1s" );
         
