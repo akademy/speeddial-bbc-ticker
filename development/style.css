@@ -230,6 +230,8 @@ article {
 /*
  * Title
  */
+ .title { margin-top: 2px; }
+ 
 .small #latest .title {
 	display:inline;
 }
@@ -257,7 +259,7 @@ article {
 /* */
 .desc {
 	display: none;
-	text-align: justify;
+	/*text-align: left;*/
 	/*margin-right: 10%;
 	border-right: 1px dotted #004;*/
 	padding: 5px;

@@ -15,7 +15,7 @@ window.addEventListener( 'load', function() {
 	var feedUpdate = 5; // Minutes
 	var feedCount = 0;
 
-	var debugging = true;
+	var debugging = false;
 
 	var latestData = new Data();
 	var previousData = new Data();
@@ -131,7 +131,8 @@ window.addEventListener( 'load', function() {
 
 			var display = '';
 			
-			display += '<div class="image" style="background-image:url(\'' + photoLarge.url + '\');"></div>';
+			if( photoLarge )
+				display += '<div class="image" style="background-image:url(\'' + photoLarge.url + '\');"></div>';
 
 			display += '<div class="text">';
 			display += '<div class="title">' + getText( title ) + '</div>';

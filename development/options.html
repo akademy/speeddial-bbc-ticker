@@ -16,22 +16,24 @@
   	header { font-size: 1em; color: white; padding: 10px; vertical-align:middle; }
   	header { background: #900 url(images/icon.png) no-repeat scroll 10px 10px; padding-left: 85px; height: 65px; }
   	h1 { margin: 10px 0;padding:0;vertical-align:middle;display: block; }
-
-	#quickset select { display: inline-block; float: left; margin: 0 auto; }
-  	
+	
   	table { font-size: 0.7em;}
   	tr { margin: 0; padding: 0px; }
   	td { padding: 5px; margin: 0px; }
   	thead tr { font-weight: bold; border-bottom: 1px solid #aaa;}
   	tr > td:first-child { border-right: 1px solid #aaa; width: 50px; }
-  	ul { background-color: #bbb; border: 2px solid #999; padding: 10px; list-style-type: none;}
-  	
-  	li { background-color: #ccc; border: 1px solid #ddd; padding: 10px; }
+	
+  	ul { border: 0px solid #999; padding: 0px; list-style-type: none;}
+  	li { border: 0px solid #ddd; padding: 0px; }
+	
   	input[type=text] { width: 300px; }
   	input[type=button] { min-width: 50px; }
-  	label { width: 100px; }
-  	li p { font-size: smaller;}
+  	label { display: block; }
+  	li p { font-size: smaller; display:block; margin-left: 15px; }
   	
+	select { width: 250px; display: block; margin: 5px;}
+  	#quickset label {width: 200px; }
+	
    a:visited.jumpdown,a.jumpdown { text-decoration: none; color: #44f; font-size: 10px;}
    a:visited.jumpup,a.jumpup { text-decoration: none; color: #44f; text-align:right; font-size: 10px; padding: 10px; display:block;}
    a:visited.jumpup:before,a.jumpup:before,a:visited.jumpdown:before,a.jumpdown:before { content: "("; }
@@ -61,7 +63,8 @@
 
 	 <section id="quickset">
 	 	<h2>Quick set</h2>
-	 	<p>Choose an option from one of these dropdowns to automatically select a news feed:</p>
+	 	<p><strong>Choose an option to automatically select a news feed</strong>:</p>
+			<label for="quick_select_subject">Subject (English)</label>
 			<select name="quick_select_subject" id="quick_select_subject" />
 				<script type="text/javascript">
 					document.write( '<option value="' + ignore + '">Select a subject</option>' );
@@ -70,8 +73,9 @@
 						document.write( '<option value="' + feeds_subject.names[i] + '">' + feeds_subject.names[i] + '</option>' );
 					}
 				</script>
-			  
 			</select>
+			<br/>
+			<label for="quick_select_region">or Region (English)</label>
 			<select name="quick_select_region" id="quick_select_region" />
 				<script type="text/javascript">
 					document.write( '<option value="' + ignore + '">Select a region (English language)</option>' );
@@ -80,12 +84,12 @@
 						document.write( '<option value="' + feeds_region.names[i] + '">' + feeds_region.names[i] + '</option>' );
 					}
 				</script>
-			  
 			</select>
-			
+			</br>
+			<label for="quick_select_region">or Language / Region</label>
 			<select name="quick_select_language" id="quick_select_language" />
 				<script type="text/javascript">
-					document.write( '<option value="' + ignore + '">Select a region (Other languages)</option>' );
+					document.write( '<option value="' + ignore + '">Select a language (Other languages)</option>' );
 					var i = 0;
 					for(; i < feeds_language.names.length; i++ ) {
 						document.write( '<option value="' + feeds_language.names[i] + '">' + feeds_language.names[i] + '</option>' );
@@ -93,71 +97,50 @@
 				</script>
 			  
 			</select>
-			<br style="clear:both;"/>
-			<p>Or set your own values below.</p>
+			
 	 </section>
-	 
 	 <section>
-		 <h2>Current settings:</h2>
-		 <table id="current">
-		 <thead>
-		 <tr><td>Setting<td>Current
-		 </thead>
-		 <tbody>
-		 <tr><td>RSS <td><span id="rsscurrent"></span> &nbsp; <a class="jumpdown" href="#rsschange">edit</a>
-		 <tr><td>URL <td><span id="urlcurrent"></span> &nbsp; <a class="jumpdown" href="#urlchange">edit</a>
-		 <tr><td>Title <td><span id="titlecurrent"></span> &nbsp; <a class="jumpdown" href="#titlechange">edit</a>
-		 <tr><td><td><span></span>
-		 <tr><td>Speed <td><span id="speedcurrent"></span> &nbsp; <a class="jumpdown" href="#speedchange">edit</a>
-		 <tr><td>Animation <td><span id="animcurrent"></span> &nbsp; <a class="jumpdown" href="#animchange">edit</a>
-		 <tr><td>Items type<td><span id="typecurrent"></span> &nbsp; <a class="jumpdown" href="#typechange">edit</a>
-		 </tbody>
-		 </table>
-	 </section>
+			<br style="clear:both;"/>
+			<p><strong>Or choose your own values</strong>:</p>
+			<form>
+				<ul>
+					<li id="rsschange"><label for="rss">RSS feed:</label>
+						<input type="text" name="rss" id="rss" value="" />
+						<input type="button" name="rssset" id="rssset" value="set"/>
+						<p>Set the RSS feed which will be used to show the news.<br/>
+						e.g. http://feeds.<b>bbci.co.uk</b>/news/world/rss.xml or http://www.<b>bbc.co.uk</b>/turkce/index.xml</p>
+					</li>
+					<li id="urlchange"><label for="url">Speed dial link:</label>
+						<input type="text" name="url" id="url" value="" />
+						<input type="button" name="urlset" id="urlset" value="set"/>
+						<p>Set the link that is triggered when the speed dial is pressed (when more than one item is displayed).<br/>
+						 e.g.: http://www.bbc.co.uk/news/world/ or http://www.bbc.co.uk/turkce/ .</p>
+					</li>
+					<li id="titlechange"><label for="title">Speed dial title:</label>
+						<input type="text" name="title" id="title" value="" />
+						<input type="button" name="titleset" id="titleset" value="set"/>
+						<p>Create a title for the speeddial, "BBC News" will be appended to the end.<br/>
+						 e.g.: set "World" to make "World - BBC News", or leave blank to just have "BBC News".</p>
+					</li>
+				</ul>
+			</form>
  
  <section>
-	 <h2>Change the settings:</h2>
+	 <h2>Other settings:</h2>
 	 
 	 <form>
-		 <section>
-			 <ul>
-				<li><h3>News settings</h3></li>
-				<li id="rsschange"><label for="rss">Set the RSS feed:</label>
-				<input type="text" name="rss" id="rss" value="" />
-				<input type="button" name="rssset" id="rssset" value="set"/>
-				<p>Set the RSS feed which will be used to show the news.<br/>
-				e.g. http://feeds.<b>bbci.co.uk</b>/news/world/rss.xml or http://www.<b>bbc.co.uk</b>/turkce/index.xml</p>
-				<a class="jumpup" href="#current">back</a>
-				</li>
-				<li id="urlchange"><label for="url">Set the speeddial link:</label>
-				<input type="text" name="url" id="url" value="" />
-				<input type="button" name="urlset" id="urlset" value="set"/>
-				<p>Set the link that is triggered when the speed dial is pressed.<br/>
-				 e.g.: http://www.bbc.co.uk/news/world/ or http://www.bbc.co.uk/turkce/ or http://www.facebook.com/BringBackFirefly .</p>
-				<a class="jumpup" href="#current">back</a>
-				</li>
-				<li id="titlechange"><label for="title">Set the speeddial title:</label>
-				<input type="text" name="title" id="title" value="" />
-				<input type="button" name="titleset" id="titleset" value="set"/>
-				<p>Create a title for the speeddial, "BBC News" will be appended to the end.<br/>
-				 e.g.: set "World" to make "World - BBC News", or leave blank to just have "BBC News".</p>
-				<a class="jumpup" href="#current">back</a>
-				</li>
-			</ul>
-		</section>
 		<section>
 		<ul>
-			<li><h3>Display settings</h3></li>
-			<li id="speedchange"><label for="speed">Select item change speed:</label>
-			<select name="speed" id="speed" />
-			  <option value="1">Fast</option>
-			  <option value="2">Medium</option>
-			  <option value="3">Slow</option>
-			</select>
-			<p>Change how quickly the RSS Items will change in the display.</p>
-			<a class="jumpup" href="#current">back</a>
+			<li id="speedchange"><label for="speed">Change speed:</label>
+				<select name="speed" id="speed" />
+				  <option value="1">Fast</option>
+				  <option value="2">Medium</option>
+				  <option value="3">Slow</option>
+				</select>
+				<p>Change how quickly the RSS Items will change in the display.</p>
 			</li>
-			<li id="animchange"><label for="anim">Select item change animation:</label>
+			
+			<li id="animchange"><label for="anim">Change animation:</label>
 			<select name="anim" id="anim" />
 			  <option value="3">Fade</option>
 			  <option value="1">Slide Left</option>
@@ -167,15 +150,14 @@
 			  <option value="4">None</option>
 			</select>
 			<p>Change the animation between new items. </p>
-			<a class="jumpup" href="#current">back</a>
 			</li>
-			<li id="typechange"><label for="type">Select item type:</label>
+			
+			<li id="typechange"><label for="type">Item sort:</label>
 			<select name="type" id="type" />
 			  <option value="1">Top rated (recommended)</option>
 			  <option value="2">Latest</option>
 			</select>
 			<p>Top rated means show the items selected on the BBC web page as most significant, Latest items means show the most recent updates on the RSS feed. </p>
-			<a class="jumpup" href="#current">back</a>
 			</li>
 		</ul>
 		</section>
@@ -198,9 +180,9 @@
 	<a href="http://www.akademy.co.uk/me/donate.php"><img src="images/21748w2cktoxjsp.jpg" width="100px;"/></a>
 	<br/><br/> Visit my website for other cool things: <a href="http://www.akademy.co.uk">www.akademy.co.uk</a>. And here's a few more of my <a href="">Opera Extensions</a>.
 	 <br/><br/> 
-	 Note that this extension is not endorsed by the BBC, but thanks anyway.
+	 Note that this extension is not endorsed by the BBC but I don't know if I'm supposed to tell you that or not... best keep quiet about it...
 <br/><br/>
-<a href="http://www.freedigitalphotos.net/images/view_photog.php?photogid=905">Image: Pixomar / FreeDigitalPhotos.net</a>
+<a href="http://www.freedigitalphotos.net/images/view_photog.php?photogid=905" style="font-size: small">Image: Pixomar / FreeDigitalPhotos.net</a>
  </footer>
  <br/>
 
@@ -245,11 +227,11 @@
 	}
 	function setRss( rss_value ) {
 		rss.value = widget.preferences.rssFeed = rss_value;
-		rsscurrent.innerHTML = '<a href="' + rss_value + '">' + rss_value + '</a>';
+		//rsscurrent.innerHTML = '<a href="' + rss_value + '">' + rss_value + '</a>';
 	}
 	function setUrlHtml( url_value ) {
 		url.value = widget.preferences.urlLink = url_value;
-		urlcurrent.innerHTML = '<a href="' + url_value + '">' + url_value + '</a>';
+		//urlcurrent.innerHTML = '<a href="' + url_value + '">' + url_value + '</a>';
 	}
 	function setTitle( title_value ) {
 		title.value = widget.preferences.title = title_value;
@@ -258,7 +240,7 @@
 		if( title_value !== '' ) {
 			html_title_value = '<b>' + title_value + '</b> - BBC News';
 		}
-		titlecurrent.innerHTML = html_title_value;
+		//titlecurrent.innerHTML = html_title_value;
 	}
 	
 	function setQuick( value, list ) {
@@ -272,13 +254,6 @@
 	var quick_subject = document.getElementById( "quick_select_subject" );
 	var quick_region = document.getElementById( "quick_select_region" );
 	var quick_language = document.getElementById( "quick_select_language" );
-	
-	var rsscurrent = document.getElementById( 'rsscurrent' );
-	var urlcurrent = document.getElementById( 'urlcurrent' );
-	var titlecurrent = document.getElementById( 'titlecurrent' );
- 	var speedcurrent = document.getElementById( 'speedcurrent' );
- 	var animcurrent = document.getElementById( 'animcurrent' );
- 	var typecurrent = document.getElementById( 'typecurrent' );
  
 	var rss = document.getElementById( 'rss' );
 	var rssset = document.getElementById( 'rssset' );
@@ -308,15 +283,15 @@
 		
 		if ( widget.preferences.changeSpeed !== undefined ) {
 			speed.value = widget.preferences.changeSpeed;
-			speedcurrent.innerHTML = getSpeed(widget.preferences.changeSpeed);
+			//speedcurrent.innerHTML = getSpeed(widget.preferences.changeSpeed);
 		}
 		if ( widget.preferences.animationType !== undefined ) {
 			anim.value = widget.preferences.animationType;
-			animcurrent.innerHTML = getAnim(widget.preferences.animationType);
+			//animcurrent.innerHTML = getAnim(widget.preferences.animationType);
 		}
 		if ( widget.preferences.itemsType !== undefined ) {
 			type.value = widget.preferences.itemsType;
-			typecurrent.innerHTML = getItemsType(widget.preferences.itemsType);
+			//typecurrent.innerHTML = getItemsType(widget.preferences.itemsType);
 		}
 	
 	
@@ -351,17 +326,17 @@
 	
 		speed.addEventListener( 'change', function() {
 			widget.preferences.changeSpeed = this.value;
-			speedcurrent.innerHTML = getSpeed(this.value);	
+			//speedcurrent.innerHTML = getSpeed(this.value);	
 		}, false );
 	
 		anim.addEventListener( 'change', function() {
 			widget.preferences.animationType = this.value;
-			animcurrent.innerHTML = getAnim(this.value);	
+			//animcurrent.innerHTML = getAnim(this.value);	
 		}, false );
 	
 		type.addEventListener( 'change', function() {
 			widget.preferences.itemsType = this.value;
-			typecurrent.innerHTML = getItemsType(this.value);	
+			//typecurrent.innerHTML = getItemsType(this.value);	
 		}, false );
 	
 	

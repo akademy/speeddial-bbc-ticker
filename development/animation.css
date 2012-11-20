@@ -106,19 +106,19 @@
 		animation-timing-function: ease-out;
 	}
 	to { 
-		top: -100px;
+		top: -80px;
 		opacity:0;
 	}
 }
 
 @keyframes slide_up_show {
 	from { 
-		top: 100px;
+		top: 80px;
 		opacity:0;
 		animation-timing-function: ease-in;
 	}
 	to { 
-		top: 0px; 
+		top: 0; 
 		opacity:1;
 	}
 }
