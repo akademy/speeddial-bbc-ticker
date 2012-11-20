@@ -38,8 +38,8 @@ function FeedItem( _guid, _title, _description, _link, _pubDate, _photos ) {
 	var description = _description || '';
 	var link = _link || '';
 	var pubDate = _pubDate || null;
-   var guid = _guid || null; 
-   var photos = _photos || [];
+	var guid = _guid || null; 
+	var photos = _photos || [];
 	
 	this.getTitle = function() {
         return title.cloneNode ? title.cloneNode(true) : title;
@@ -56,6 +56,7 @@ function FeedItem( _guid, _title, _description, _link, _pubDate, _photos ) {
 	this.getGUID = function() { return guid; }
 	
 	this.getSmallPhoto = function() {
+		
 		var photo = null;
 		if( photos.length > 0 ) {
 			var width = photos[0].width;
@@ -70,9 +71,11 @@ function FeedItem( _guid, _title, _description, _link, _pubDate, _photos ) {
 				}
 			}
 		}
+		
 		return photo;
 	}
 	this.getLargePhoto = function() {
+		
 		var photo = null;
 		if( photos.length > 0 ) {
 			var width = photos[0].width;
@@ -87,6 +90,7 @@ function FeedItem( _guid, _title, _description, _link, _pubDate, _photos ) {
 				}
 			}
 		}
+		
 		return photo;
 	}
 }

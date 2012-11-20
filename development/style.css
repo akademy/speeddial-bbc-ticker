@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  overflow: inherit;
 }
 
 html {
@@ -28,13 +29,11 @@ header {
     top:0;
     left:0;
     padding: 0;
-    background-color: #500;/*#900;*/
-    /*background-image: -o-linear-gradient(45deg, #900,#a00);*/
+    background-color: #500;
     color: white;
     font-weight: bold;
-    overflow:hidden;
     z-index: 1;
-    box-shadow: 0px 0px 5px 0px black;
+	vertical-align: middle;
 }
 
 .debug header {
@@ -73,12 +72,15 @@ header output,
 header img {
 	display: table-cell;
 	vertical-align: middle;
+	border-bottom: 1px solid #500;
 }
 
+header img { padding-top:1px;padding-left: 1px;}
+
 output#date {
-	padding-left: 20px;
-	left: 50%;
-	text-align: right;
+	/*padding-left: 20px;
+	left: 50%;*/
+	text-align: center;
 }
 .tiny output#date {
     display: none;
@@ -101,6 +103,9 @@ output#clock {
 	width: 100%;
 	font-size: 1.7em;
 	vertical-align: middle;
+	
+	background-image: url('images/globe-red.png');
+	background-color: white;
 }
 .tiny #main {
 	top: 8%;
@@ -112,60 +117,43 @@ output#clock {
   Item sections
 */
 section {
-  display: table;
-  position: absolute;
-  text-align: center;
-  vertical-align: top;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  
-  /*text-shadow: 0 0.1em 0.2em #999;
-  color:#2a5174;*/
-}
-
-
-#latest {
-	/*background-image: -o-linear-gradient(#f9f9f9,#e5e5e5);*/
-	background-color: #900;
-	background-image: url('images/globe-red.png');
-	color: white;
-}
-#previous {
-	/*background-image: -o-linear-gradient(#eeeeee,#dadada);*/
-	background-color: #fff;
+	display: table;
+	position: absolute;
+	text-align: center;
+	vertical-align: top;
+	width: 100%;
+	height: 100%;
+	left: 0;
 	color: black;
+	overflow:hidden;
 }
-#oldest {
-	/*background-image: -o-linear-gradient(#e1e1e1,#d1d1d1);*/
-	background-color: #fff;
-	color: #505050;
-}
+
+
+#latest {border-bottom: 2px solid #500;}
+#previous { border-top: 2px solid #500;border-bottom: 0px solid #500;}
+#oldest {border-top: 2px solid #500;}
 
 #latest {
 	top: 0%;
 }
 .large #latest {
-	height: 50%;
+	max-height: 50%;
 	font-size: 95%;
 }
 .large #previous {
 	top: 50%;
-	height: 31%;
-	display: table;
+	max-height: 31%;
+	/*display: table;*/
 	font-size: 75%;
-	color: #255385;
-	border-top: 1px dotted #900;
 }
 .large #oldest {
-	top: 80%;
+	top: 81%;
 	height: 19%;
-	display: table;
+	/*display: table;*/
 	font-size: 55%;
-	border-top: 1px dotted #900;
-	border-bottom: 1px dotted #505050;
-	visibility:shown;
+	visibility:visible;
 }
+
 .bigger #latest {
 	height: 75%;
 	font-size: 80%;
@@ -175,7 +163,7 @@ section {
 	height: 25%;
 	display: table;
 	font-size: 50%;
-	visibility:shown;
+	visibility:visible;
 }
 
 .big #latest {
@@ -187,7 +175,7 @@ section {
 	height: 25%;
 	display: table;
 	font-size: 40%;
-	visibility:shown;
+	visibility:visible;
 }
 
 .big #oldest, 
@@ -219,12 +207,12 @@ article {
 	position: relative;
 	height: 100%;
 	width: 98%;
-	padding: 2px;
+	padding: 0px;
 	margin: 0 auto;
 	display:table-cell;
 	text-align: center;
 	vertical-align: top;
-	overflow:hidden;
+	/*overflow:hidden;*/
 	text-overflow: ellipsis;
 }
 
@@ -234,10 +222,22 @@ article {
 	vertical-align: middle;
 }
 
+.text {
+	height: 97%;
+}
+
+/* 
+/*
+ * Title
+ */
+.small #latest .title {
+	display:inline;
+}
+
 /*
   Item Time
 */
-.time {
+/*.time {
 	font-size: 8px;
 	float:right;
 	margin: 3px;
@@ -246,24 +246,21 @@ article {
 .tiny .time {
 	font-size: 6px;
 }
-.small #latest .title {
-	display:inline;
-}
 .small #latest .time {
 	display:inline;
 	float:none;
-}
-.small #latest .time:before { content: "("; }
-.small #latest .time:after { content: ")"; }
-/*
-  Item Description
-*/
+}*/
+
+
+/**/
+/*  Item Description */
+/* */
 .desc {
 	display: none;
 	text-align: justify;
 	/*margin-right: 10%;
 	border-right: 1px dotted #004;*/
-	padding-right: 5px;
+	padding: 5px;
 	/*color:#5a81a4;*/
   	text-shadow: none;
 }
@@ -282,49 +279,44 @@ article {
 .large #previous .desc {
 	color: black;
 }
-
+/* */
 /* Images */
-.img_sma, .img_lar {
-	float:left;
-	margin: 0 5px 5px 0;
-	display: none;
+/* */
+.image {
+  background-color:black;
+  height: 100%;
+  width: 30%;
+  display:inline-block;
+  /*padding: 5px;*/
+  float:left;
+  
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
 }
-.img_lar { max-height: 81px; padding-top: 0px;}
-.img_sma { max-height: 49px; }
 
-.large #latest .img_lar { display:block; margin:5px; }
-.large #latest .img_sma { display:none; }
-.large #previous .img_lar { display:none; }
-.large #previous .img_sma { display:block; }
+#latest .image { margin-right: 5px; }
+#previous .image { margin-left: 5px; }
+#oldest .image { margin-right: 5px; }
 
-.bigger #latest .img_lar { display:block; margin:5px; }
-.bigger #latest .img_sma { display:none; }
-.bigger #previous .img_lar { display:none; }
-.bigger #previous .img_sma { display:none; }
+#previous .image {
+	float:right;
+}
 
-.big #latest .img_lar { display:none; }
-.big #latest .img_sma { display:block; padding-top: 3px;}
-.big #previous .img_lar { display:none; }
-.big #previous .img_sma { display:none; }
-
-.small #latest .img_lar { display:none; }
-.small #latest .img_sma { display:block; }
-
-.tiny #latest .img_lar { display:none; }
-.tiny #latest .img_sma { display:none; }
+/*.tiny #latest .image { display:none; }*/
 
 
 /* */
 /* Debug */
 /* */
 .debug section {
-	border: solid 1px blue;
+	/*outline: solid 1px blue;*/
 }
 .debug section article {
-	border: dashed 1px red;
+	outline: dashed 1px red;
 }
 .debug .title, .debug .desc, .debug .time, .debug .img_sma, .debug .img_lar {
-	border: dotted 1px green;
+	outline: dotted 1px green;
 }
 
 /* Styles here are only applied in a "minimized" state */

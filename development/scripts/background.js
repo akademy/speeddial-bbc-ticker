@@ -6,6 +6,7 @@ function Data() {
 	this.change = 0;
 	this.timerStart = 0;
 }
+
 window.addEventListener( 'load', function() {
 
 	var bbcFeed = null;
@@ -37,28 +38,50 @@ window.addEventListener( 'load', function() {
 			slide_left : 1,
 			slide_right : 2,
 			fade : 3,
-			none: 4 };
+			none: 4,
+			slide_up : 5,
+			slide_down : 6
+
+			 };
 	var anim = anims.slide_left;  
     
 	function formatTime(time) {
 		return (time < 10) ? '0' + time : time;
 	}
-    
-	function animationHide( animObj, animType ) {
-		
+
+	function getAnim( animType, hide ) {
 		var animation = "";
 		
 		if( animType == anims.slide_right )
-			animation = "slide_right_hide";
+			animation = "slide_right_";
 		else if( animType == anims.slide_left )
-			animation = "slide_left_hide";
+			animation = "slide_left_";
 		else if( animType == anims.fade )
-			animation = "fade_hide";
+			animation = "fade_";
 		else if( animType == anims.none )
-			animation = "no_anim_hide";
+			animation = "no_anim_";
+		else if( animType == anims.slide_up )
+			animation = "slide_up_";
+		else if( animType == anims.slide_down )
+			animation = "slide_down_";
+
+		if( hide ) {
+			animation += "hide";
+		}
+		else {
+			animation += "show";
+		}
+
+		return animation;
+			
+	}
+    
+	function animationHide( animObj, animType ) {
+		
+		var animation = getAnim( animType, true );
 			
 		animObj.style.setProperty( "animation-name", animation );
-	    	animObj.style.setProperty( "animation-fill-mode","forwards" );
+	    animObj.style.setProperty( "animation-fill-mode","forwards" );
 	    	
 		if( animType == anims.none )
 			animObj.style.setProperty( "animation-duration","0.2s" );
@@ -72,21 +95,12 @@ window.addEventListener( 'load', function() {
     
 	function animationShow( animObj, animType ) {
 	
-	    	var animation = "";
-	    	
-		if( animType == anims.slide_right )
-			animation = "slide_right_show";
-		else if( animType == anims.slide_left )
-			animation = "slide_left_show";
-		else if( animType == anims.fade )
-			animation = "fade_show";
-		else if( animType == anims.none )
-			animation = "no_anim_show";
+	    var animation = getAnim( animType, false );
 			
-	    	animObj.style.setProperty( "animation-name", animation );
-	    	animObj.style.setProperty( "animation-fill-mode","forwards" );
+	    animObj.style.setProperty( "animation-name", animation );
+	    animObj.style.setProperty( "animation-fill-mode","forwards" );
 	    	
-	    	if( animType == anims.none )
+	    if( animType == anims.none )
 			animObj.style.setProperty( "animation-duration","0.2s" );
 		else if( animType == anims.fade )
 			animObj.style.setProperty( "animation-duration","0.5s" );
@@ -97,16 +111,12 @@ window.addEventListener( 'load', function() {
 	}
     
 	function change( obj, data ) {
-		//var obj = document.querySelector( objId );
-		//if( objId == '#oldest article' )
-		//	debug( objId + "=" + obj );
+
 		var animType = anim * 1;
 
 		var animHideEnd = function() {
-		
+			
 			var number = next( data );
-			//if( objId == '#oldest article' )
-			//	debug( objId + "=" + number );
 			var feed = bbcFeed.getItemList()[number];
 
 			var pubed = feed.getDate();
@@ -120,23 +130,13 @@ window.addEventListener( 'load', function() {
 			var feedUrl = feed.getLink();
 
 			var display = '';
-
-			if( photoLarge ) {
-				display += '<img class="img_lar" width="' + photoLarge.width + '" height="' + photoLarge.height + '" src="' + photoLarge.url + '"/>';
-			}
-			if( photoSmall ) {
-				display += '<img class="img_sma" width="' + photoSmall.width + '" height="' + photoSmall.height + '" src="' + photoSmall.url + '"/>';
-			}
-
-			display += '<div class="title">' + getText( title ) + '</div>';
-			display += '<div class="desc">' + getText( description ) + '</div>';
 			
-			if ( data.min === data.max ) {
-				display += '<div class="time">' + time + '</div>';
-			}
-			else {
-				display += '<div class="time">( ' + ((number+1)-data.min) + ' / ' + (data.max-data.min+1) + ' ) ' + time + '</div>';
-			}
+			display += '<div class="image" style="background-image:url(\'' + photoLarge.url + '\');"></div>';
+
+			display += '<div class="text">';
+			display += '<div class="title">' + getText( title ) + '</div>';
+			display += '<div class="desc">'  + getText( description ) + '</div>';
+			display += '</div>';
 
 			if( _size === 'small' || _size === 'tiny' ) {
 				updateSpeeddialLink( feedUrl );
@@ -163,15 +163,15 @@ window.addEventListener( 'load', function() {
 	function changeOldest() 	{ change( objOldest, 	oldestData ); 	}
 	
 	function getText( maybeText ) {
-	    	if( maybeText && maybeText.nodeValue ) {
-	    		return maybeText.nodeValue;
-	    	}
-	    		
-	    	if( maybeText && maybeText.childNodes ) {
-	    		return maybeText.childNodes.item(0).nodeValue;
-	    	}
-	    		
-	    	return maybeText;
+		if( maybeText && maybeText.nodeValue ) {
+			return maybeText.nodeValue;
+		}
+			
+		if( maybeText && maybeText.childNodes ) {
+			return maybeText.childNodes.item(0).nodeValue;
+		}
+			
+		return maybeText;
 	}
 
 	function next( data )  {
@@ -245,6 +245,12 @@ window.addEventListener( 'load', function() {
 		else if( num === 3 ) {
 			anim = anims.fade;
 		}
+		else if( num === 5 ) {
+			anim = anims.slide_up;
+		}
+		else if( num === 6 ) {
+			anim = anims.slide_down;
+		}
 		else  {
 			anim = anims.none;
 		}
@@ -296,16 +302,17 @@ window.addEventListener( 'load', function() {
         
 		if( oldSize !== _size ) {
 			
-			if( (oldSize !== "tiny" && _size !== "small") &&
-				(oldSize !== "small" && _size !== "tiny" ) &&
-				(oldSize !== "big" && _size !== "bigger" ) &&
-				(oldSize !== "bigger" && _size !== "big" )    ) {
+			if( !( (oldSize === "tiny" && _size === "small") ||
+				   (oldSize === "small" && _size === "tiny" ) ||
+				   (oldSize === "big" && _size === "bigger" ) ||
+				   (oldSize === "bigger" && _size === "big" )    ) ) {
 					
 				_setSections();
 				_updateSections();
 			}
 			
 			if( _size === 'small' || _size === 'tiny' ) {
+				
 				var feed = bbcFeed.getItemList()[_getItemNumber(latestData)];
 				updateSpeeddialLink( feed.getLink() );
 			}
@@ -374,64 +381,39 @@ window.addEventListener( 'load', function() {
 			
 			latestData.min = 0;
 			latestData.max = 0;
-			latestData.current = -1;
 			latestData.change = 0;
-			latestData.timerStart = 0;
 
 			previousData.min = 1;
 			previousData.max = 4;
-			previousData.current = -1;
 			previousData.change = 6000 * speed;
-			previousData.timerStart = 0;
 			
 			oldestData.min = 5;
 			oldestData.max = feedCount-1;
-			oldestData.current = -1;
 			oldestData.change = 4000 * speed;
-			oldestData.timerStart = 0;
-					
-			//previousData = 	{ min: 1, max: 4, 			current: -1, change: 6000 * speed, 	timerStart: 0 };
-			//oldestData   = 	{ min: 5, max: feedCount-1, current: -1, change: 4000 * speed, 	timerStart: 0 };
+			
+			latestData.current = previousData.current = oldestData.current = -1;
+			latestData.timerStart = oldestData.timerStart = previousData.timerStart = 0;
 		}
 		else if ( _size === 'big' || _size === 'bigger' ) {
 			
 			latestData.min = 0;
 			latestData.max = 4;
-			latestData.current = -1;
 			latestData.change = 6000 * speed;
-			latestData.timerStart = 0;
 
 			previousData.min = 5;
 			previousData.max = feedCount-1;
-			previousData.current = -1;
 			previousData.change = 4000 * speed;
-			previousData.timerStart = 0;
 			
-			/*
-			oldestData.min = 5;
-			oldestData.max = feedCount-1;
-			oldestData.current = -1;
-			oldestData.change = 4000 * speed;
-			oldestData.timerStart = 0;
-			
-			latestData   = 	{ min: 0, max: 4, 			current: -1, change: 6000 * speed, 	timerStart: 0 };
-			previousData = 	{ min: 5, max: feedCount-1, current: -1, change: 4000 * speed, 	timerStart: 0 };
-
-			oldestData   = 	{ min: 0, max: 0, 			current: -1, change: 0, 			timerStart : -1 };
-			*/
+			latestData.current = previousData.current = -1;
+			latestData.timerStart = previousData.timerStart = 0;
 		}
 		else { // small or tiny
+		
 			latestData.min = 0;
 			latestData.max = feedCount-1;
 			latestData.current = -1;
 			latestData.change = 4000 * speed;
 			latestData.timerStart = 0;
-			/*
-			latestData   = 	{ min: 0, max: feedCount-1, current: -1, change: 4000 * speed, 	timerStart: 0 };
-
-			previousData = 	{ min: 0, max: 0, 			current: -1, change: 0,				timerStart: -1 };
-			oldestData   = 	{ min: 0, max: 0, 			current: -1, change: 0, 			timerStart: -1 };
-			*/
 		}
 	}
     
@@ -439,11 +421,11 @@ window.addEventListener( 'load', function() {
 		
 		changeLatest();
 		
-		if( _size === 'large' || _size === 'big' || _size === 'bigger' ) { 
+		if( _size === 'large' || _size === 'big' || _size === 'bigger' ) {
 			
 			changePrevious();
 			
-			if( _size === 'large' ) { 
+			if( _size === 'large' ) {
 				changeOldest();
 			}
 		}
@@ -578,7 +560,7 @@ window.addEventListener( 'load', function() {
     
 	createFeed();
    
-}, false);
+}, false );
 
 
 

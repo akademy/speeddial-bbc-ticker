@@ -159,9 +159,11 @@
 			</li>
 			<li id="animchange"><label for="anim">Select item change animation:</label>
 			<select name="anim" id="anim" />
-			  <option value="1">Slide left</option>
-			  <option value="2">Slide right</option>
 			  <option value="3">Fade</option>
+			  <option value="1">Slide Left</option>
+			  <option value="2">Slide Right</option>
+			  <option value="5">Slide Up</option>
+			  <option value="6">Slide Down</option>
 			  <option value="4">None</option>
 			</select>
 			<p>Change the animation between new items. </p>
@@ -224,6 +226,12 @@
 		}
 		if( num === 3 ) {
 			return "Fade";
+		}
+		if( num === 5 ) {
+			return "Slide Up";
+		}
+		if( num === 6 ) {
+			return "Slide Down";
 		}
 			
 		return "None";
