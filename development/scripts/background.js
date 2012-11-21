@@ -12,11 +12,17 @@ window.addEventListener( 'load', function() {
 	var bbcFeed = null;
 	var updateDate = null;
 	var feedMax = 12;
-	var feedUpdate = 5; // Minutes
 	var feedCount = 0;
 
 	var debugging = false;
-
+	
+	var debug = debug = function() {};
+	if( debugging ) {
+		debug = function ( mess ) {
+			opera.postError( "TICKER-DEBUG: [" + mess + "]" );
+		};
+	}
+	
 	var latestData = new Data();
 	var previousData = new Data();
 	var oldestData = new Data();
@@ -464,7 +470,8 @@ window.addEventListener( 'load', function() {
 	   
 		if( _size === 'small' || _size === 'tiny' )
 		{
-			outputdate.innerHTML = formatTime(date) + '.' + formatTime(month + 1);
+			//outputdate.innerHTML = formatTime(date) + '.' + formatTime(month + 1);
+			outputdate.innerHTML = formatTime(date) + '' + monthsShort[month];
 			//outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins);
 		}
 		else {
@@ -518,17 +525,11 @@ window.addEventListener( 'load', function() {
 		}		
 
 	}, 1000);
-
-   
-	function debug( mess ) {
-		if( debugging ) {
-			opera.postError( "TICKER-DEBUG: [" + mess + "]" );
-		}
-	}
    
    	function newPost(noChange, err) {
         
         if( !err ) {
+			debug( "******** Updating *********" );
 			if( !noChange ) {
 					
 				feedCount = bbcFeed.getItemList().length;
@@ -551,6 +552,8 @@ window.addEventListener( 'load', function() {
 			rssFeed = widget.preferences.rssFeed;
 		}
 		
+		var feedUpdate = randomNumber( 60*5, 60*8 ); // Seconds
+		debug( "feedUpdate" + feedUpdate );
 		bbcFeed = new Feed( rssFeed, 'BBC News', 'News from the BBC', newPost, feedUpdate, parsers['generic'], feedMax, sortItems );
 		bbcFeed.update();
     }
@@ -558,7 +561,7 @@ window.addEventListener( 'load', function() {
 	// 
 	// Begin
 	//
-	// debug( "************************** BBBEEEGGGIIINNN *************************************" );
+	debug( "************************** BBBEEEGGGIIINNN *************************************" );
 	
 	if (widget.preferences.changeSpeed ) {
 		speed = widget.preferences.changeSpeed;

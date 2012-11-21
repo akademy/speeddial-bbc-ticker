@@ -163,7 +163,7 @@ function Feed ( url, title, descr, feedListenerFunc, updateInterval, dataHandler
 		}
 		
 		if (! interval) {
-			interval = setInterval( self.update, intervalTime*60000 );
+			interval = setInterval( self.update, intervalTime*1000 );
 		}    
 		
 		getFeedData(forced);
