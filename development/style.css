@@ -57,12 +57,14 @@ header {
 .big #mainname, .bigger #mainname { height: 16px; }
 .small header{
 	height: 10%;
+	max-height: 10%;
 	min-height: 15px;
 	font-size: 0.7em;
 }
 .small #mainname  { height: 13px; }
 .tiny header {
 	height: 8%;
+	max-height: 8%;
 	min-height: 12px;
 	font-size: 0.5em;
 }
@@ -70,25 +72,39 @@ header {
 
 header output,
 header img {
-	display: table-cell;
+	/*display: table-cell;*/
 	vertical-align: middle;
 	border-bottom: 1px solid #500;
 }
 
 header img { padding-top:1px;padding-left: 1px;}
 
-output#date {
-	/*padding-left: 20px;
-	left: 50%;*/
+/*output#date {
 	text-align: center;
-}
+}*/
 .tiny output#date {
     display: none;
 }
-output#clock {
-	left: 100%;
+
+output#title{
+	text-align: left;
+	padding: 0 5px 0 2px;
+	display:inline-block;
+	overflow: hidden;
+	white-space: nowrap;
+	position: absolute;
+	top: 1px;
+	background-color: #500;
+}
+
+output#date{
+	right: 0;
+	top: 1px;
+	float:right;
 	text-align: right;
 	padding-right: 2px;
+	display:block;
+	position: absolute;
 }
 
 /*              */

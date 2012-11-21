@@ -140,7 +140,7 @@ window.addEventListener( 'load', function() {
 			display += '</div>';
 
 			if( _size === 'small' || _size === 'tiny' ) {
-				updateSpeeddialLink( feedUrl );
+				updateSpeeddialLink( feedUrl ); // Link directly when only one visible. (i.e. at smaller sizes.)
 			}
 			
 			obj.innerHTML = display;
@@ -204,8 +204,14 @@ window.addEventListener( 'load', function() {
 			var title = '';
 			
 			if ( widget.preferences.title !== undefined && widget.preferences.title !== '' ) {
-				title += widget.preferences.title;
+				var maintitle = widget.preferences.title;
+				
+				var outputtitle  = document.querySelector('output#title');
+				outputtitle.textContent = maintitle;
+				
+				title += maintitle;
 			}
+			
 			
 			if( title !== '' )
 				title += " - ";
@@ -303,19 +309,22 @@ window.addEventListener( 'load', function() {
         
 		if( oldSize !== _size ) {
 			
-			if( !( (oldSize === "tiny" && _size === "small") ||
+			/*if( !( (oldSize === "tiny" && _size === "small") ||
 				   (oldSize === "small" && _size === "tiny" ) ||
 				   (oldSize === "big" && _size === "bigger" ) ||
-				   (oldSize === "bigger" && _size === "big" )    ) ) {
+				   (oldSize === "bigger" && _size === "big" )    ) ) {*/
 					
 				_setSections();
 				_updateSections();
-			}
+			//}
 			
-			if( _size === 'small' || _size === 'tiny' ) {
-				
+			if(  _size === 'small' || _size === "tiny" ) {
+			
 				var feed = bbcFeed.getItemList()[_getItemNumber(latestData)];
 				updateSpeeddialLink( feed.getLink() );
+			}
+			else  {
+				updateUrl();
 			}
 		}
 	}
@@ -378,6 +387,8 @@ window.addEventListener( 'load', function() {
     
 	function _setSections() {
 		
+		var mintime = randomNumber( 4, 7 ) * 1000;
+		
 		if( _size === 'large' ) { 
 			
 			latestData.min = 0;
@@ -386,36 +397,41 @@ window.addEventListener( 'load', function() {
 
 			previousData.min = 1;
 			previousData.max = 4;
-			previousData.change = 6000 * speed;
+			previousData.change = (mintime + 2000) * speed;
 			
 			oldestData.min = 5;
 			oldestData.max = feedCount-1;
-			oldestData.change = 4000 * speed;
+			oldestData.change = mintime * speed;
 			
 			latestData.current = previousData.current = oldestData.current = -1;
 			latestData.timerStart = oldestData.timerStart = previousData.timerStart = 0;
 		}
 		else if ( _size === 'big' || _size === 'bigger' ) {
 			
+			var mintime = randomNumber( 4, 7 ) * 1000
+			
 			latestData.min = 0;
 			latestData.max = 4;
-			latestData.change = 6000 * speed;
+			latestData.change = (mintime + 2000) * speed;
 
 			previousData.min = 5;
 			previousData.max = feedCount-1;
-			previousData.change = 4000 * speed;
+			previousData.change = mintime * speed;
 			
 			latestData.current = previousData.current = -1;
 			latestData.timerStart = previousData.timerStart = 0;
 		}
 		else { // small or tiny
-		
 			latestData.min = 0;
 			latestData.max = feedCount-1;
 			latestData.current = -1;
-			latestData.change = 4000 * speed;
+			latestData.change = mintime * speed;
 			latestData.timerStart = 0;
 		}
+	}
+    
+	function randomNumber( low, high ) {
+		return Math.floor(Math.random() * (high-low)) + low;
 	}
     
 	function _updateSections() {
@@ -437,34 +453,34 @@ window.addEventListener( 'load', function() {
 	var monthsFull = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     
 	var outputdate  = document.querySelector('output#date');
-	var outputclock = document.querySelector('output#clock');
+	//var outputclock = document.querySelector('output#clock');
 	
 	function _updateClock( datetime ) {
 	
 		var month = datetime.getMonth(),
-			date = datetime.getDate(),
-			hours = datetime.getHours(),
-			mins = datetime.getMinutes();
+			date = datetime.getDate();//,
+			//hours = datetime.getHours(),
+			//mins = datetime.getMinutes();
 	   
 		if( _size === 'small' || _size === 'tiny' )
 		{
 			outputdate.innerHTML = formatTime(date) + '.' + formatTime(month + 1);
-			outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins);
+			//outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins);
 		}
 		else {
 			
-			var secs = datetime.getSeconds();
+			//var secs = datetime.getSeconds();
 			
-			if( _size === 'big' || _size === 'bigger' )
-			{
+			if( _size === 'big' || _size === 'bigger' ) {
+			
 				outputdate.innerHTML = formatTime(date) + ' ' + monthsShort[month];
-				outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins) + ':' + formatTime(secs);
+				//outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins) + ':' + formatTime(secs);
 			}
-			else // _size === 'large'
-			{
-				var year = datetime.getYear();
-				outputdate.innerHTML = formatTime(date) + ' ' + monthsFull[month] + ' ' + (year+1900);
-				outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins) + ':' + formatTime(secs);
+			else /* _size === 'large' */ {
+			
+				//var year = datetime.getYear();
+				outputdate.innerHTML = formatTime(date) + ' ' + monthsFull[month];// + ' ' + (year+1900);
+				//outputclock.innerHTML = formatTime(hours) + ':' + formatTime(mins) + ':' + formatTime(secs);
 			}
 		}
 	}
