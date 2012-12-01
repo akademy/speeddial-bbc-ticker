@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
  <head>
-  <title>Options</title>
+  <title>Preferences</title>
   <style>
-  	body { background-color: #333; font-family: "Arial", "Helmet", "Freesans", sans-serif; }
+  	body { background-color: #fff; font-family: "Arial", "Helmet", "Freesans", sans-serif; margin: 0; }
   	
   	#wrapper {
   		margin-left: auto;
@@ -13,9 +13,9 @@
   		padding: 10px;
   	}
   	
-  	header { font-size: 1em; color: white; padding: 10px; vertical-align:middle; }
-  	header { background: #900 url(images/icon.png) no-repeat scroll 10px 10px; padding-left: 85px; height: 65px; }
-  	h1 { margin: 10px 0;padding:0;vertical-align:middle;display: block; }
+  	header { font-size: 1em; color: white; padding: 0px; vertical-align:middle; }
+  	header { background: #500 url(images/icon.png) no-repeat scroll 0 0; padding-left:85px;height: 64px; }
+  	h1 { margin:0;padding:10px 0 0 0;vertical-align:middle;display: block; }
 	
   	table { font-size: 0.7em;}
   	tr { margin: 0; padding: 0px; }
@@ -28,10 +28,12 @@
 	
   	input[type=text] { width: 300px; }
   	input[type=button] { min-width: 50px; }
-  	label { display: block; }
-  	li p { font-size: smaller; display:block; margin-left: 15px; }
+  	label { display: block; margin-top: 10px; }
   	
-	select { width: 250px; display: block; margin: 5px;}
+  	.help {cursor:help}
+	.helptext { font-size:smaller; display: none; background-color: #ccc; padding:3px; line-height: 1.5 }
+  	
+	select { width: 250px; display: inline-block; margin: 5px;}
   	#quickset label {width: 200px; }
 	
    a:visited.jumpdown,a.jumpdown { text-decoration: none; color: #44f; font-size: 10px;}
@@ -39,12 +41,13 @@
    a:visited.jumpup:before,a.jumpup:before,a:visited.jumpdown:before,a.jumpdown:before { content: "("; }
    a:visited.jumpup:after,a.jumpup:after,a:visited.jumpdown:after,a.jumpdown:after { content: ")"; }
    
-   footer { text-align: center; background-color:white; color: black; padding:5px; }
+   footer { text-align: center; background-color:white; color: black; padding:5px; border-top: 1px solid #555; }
    footer a { color: #88F; }
 
 	#gen { float:right; margin: 10px; font-size:smaller; padding: 3px; }
   </style>
   
+  <script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
   <script type="text/javascript" src="scripts/feeds.js"></script>
   <script type="text/javascript">
   	var ignore = "ignore";
@@ -55,7 +58,7 @@
  <div id="wrapper"> 
  
 	 <header>
-		 <h1>BBC Ticker Options</h1>
+		 <h1>Preferences</h1>
 	 </header>
 	 <div id="gen">
 		<a href="#generous">Feeling Generous?</a>
@@ -63,8 +66,7 @@
 
 	 <section id="quickset">
 	 	<h2>Quick set</h2>
-	 	<p><strong>Choose an option to automatically select a news feed</strong>:</p>
-			<label for="quick_select_subject">Subject (English)</label>
+			<label for="quick_select_subject">Subject (in English)</label>
 			<select name="quick_select_subject" id="quick_select_subject" />
 				<script type="text/javascript">
 					document.write( '<option value="' + ignore + '">Select a subject</option>' );
@@ -75,7 +77,7 @@
 				</script>
 			</select>
 			<br/>
-			<label for="quick_select_region">or Region (English)</label>
+			<label for="quick_select_region">or Region (in English)</label>
 			<select name="quick_select_region" id="quick_select_region" />
 				<script type="text/javascript">
 					document.write( '<option value="' + ignore + '">Select a region (English language)</option>' );
@@ -86,7 +88,7 @@
 				</script>
 			</select>
 			</br>
-			<label for="quick_select_region">or Language / Region</label>
+			<label for="quick_select_language">or Region (in local language)</label>
 			<select name="quick_select_language" id="quick_select_language" />
 				<script type="text/javascript">
 					document.write( '<option value="' + ignore + '">Select a language (Other languages)</option>' );
@@ -101,31 +103,34 @@
 	 </section>
 	 <section>
 			<br style="clear:both;"/>
-			<p><strong>Or choose your own values</strong>:</p>
+			<h2 style="border-top: 1px dashed #444;padding-top:15px">Free set</h2>
 			<form>
 				<ul>
 					<li id="rsschange"><label for="rss">RSS feed:</label>
 						<input type="text" name="rss" id="rss" value="" />
 						<input type="button" name="rssset" id="rssset" value="set"/>
-						<p>Set the RSS feed which will be used to show the news.<br/>
+						<img class="help" src="images/help.png" />
+						<p class="helptext">Set the RSS feed which will be used to show the news.<br/>
 						e.g. http://feeds.<b>bbci.co.uk</b>/news/world/rss.xml or http://www.<b>bbc.co.uk</b>/turkce/index.xml</p>
 					</li>
 					<li id="urlchange"><label for="url">Speed dial link:</label>
 						<input type="text" name="url" id="url" value="" />
 						<input type="button" name="urlset" id="urlset" value="set"/>
-						<p>Set the link that is triggered when the speed dial is pressed (when more than one item is displayed).<br/>
+						<img class="help" src="images/help.png" />
+						<p class="helptext">Set the link that is triggered when the speed dial is pressed (when more than one item is displayed).<br/>
 						 e.g.: http://www.bbc.co.uk/news/world/ or http://www.bbc.co.uk/turkce/ .</p>
 					</li>
 					<li id="titlechange"><label for="title">Speed dial title:</label>
 						<input type="text" name="title" id="title" value="" />
 						<input type="button" name="titleset" id="titleset" value="set"/>
-						<p>Create a title for the speeddial.</p>
+						<img class="help" src="images/help.png" />
+						<p class="helptext">Create a title for the speeddial.</p>
 					</li>
 				</ul>
 			</form>
  
  <section>
-	 <h2>Other settings:</h2>
+	 <h2 style="border-top: 1px dashed #444;padding-top:15px">Other settings</h2>
 	 
 	 <form>
 		<section>
@@ -136,7 +141,8 @@
 				  <option value="2">Medium</option>
 				  <option value="3">Slow</option>
 				</select>
-				<p>Change how quickly the RSS Items will change in the display.</p>
+						<img class="help" src="images/help.png" />
+				<p class="helptext">Change how quickly the RSS Items will change in the display.</p>
 			</li>
 			
 			<li id="animchange"><label for="anim">Change animation:</label>
@@ -148,7 +154,8 @@
 			  <option value="6">Slide Down</option>
 			  <option value="4">None</option>
 			</select>
-			<p>Change the animation between new items. </p>
+						<img class="help" src="images/help.png" />
+			<p class="helptext">Change the animation between new items. </p>
 			</li>
 			
 			<li id="typechange"><label for="type">Item sort:</label>
@@ -156,7 +163,8 @@
 			  <option value="1">Top rated (recommended)</option>
 			  <option value="2">Latest</option>
 			</select>
-			<p>Top rated means show the items selected on the BBC web page as most significant, Latest items means show the most recent updates on the RSS feed. </p>
+				<img class="help" src="images/help.png" />
+			<p class="helptext">Top rated means show the items selected on the BBC web page as most significant, Latest items means show the most recent updates on the RSS feed. </p>
 			</li>
 		</ul>
 		</section>
@@ -177,10 +185,8 @@
 	<a name="generous"></a>
 	 Thanks for using the speeddial BBC News Ticker, if you like it perhaps you like to <a href="http://www.akademy.co.uk/me/donate.php">buy me a beer</a>!<br/>
 	<a href="http://www.akademy.co.uk/me/donate.php"><img src="images/21748w2cktoxjsp.jpg" width="100px;"/></a>
-	<br/><br/> Visit my website for other cool things: <a href="http://www.akademy.co.uk">www.akademy.co.uk</a>. And here's a few more of my <a href="">Opera Extensions</a>.
+	<br/><br/> Visit my website for other cool software and bits, <a href="http://www.akademy.co.uk/">www.akademy.co.uk</a>.
 	 <br/><br/> 
-	 Note that this extension is not endorsed by the BBC but I don't know if I'm supposed to tell you that or not... best keep quiet about it...
-<br/><br/>
 <a href="http://www.freedigitalphotos.net/images/view_photog.php?photogid=905" style="font-size: small">Image: Pixomar / FreeDigitalPhotos.net</a>
  </footer>
  <br/>
@@ -267,7 +273,7 @@
 	var defaults = document.getElementById( 'defaults' );
 	
 	// setup
-	if( widget !== undefined ) {
+	if( widget ) { //!== undefined ) {
 		if ( widget.preferences.rssFeed !== undefined ) {
 			setRss( widget.preferences.rssFeed );
 		}
@@ -350,6 +356,27 @@
 				widget.preferences.title = title.value = "World";
 			}	
 		}, false );	
+	}
+
+	$(function() {
+		// onload
+		$("img.help").toggle(function() {
+			showHideHelp(this, true);
+		}, function() {
+			showHideHelp(this, false);
+		})
+
+		$(".helptext").each( showHideHelp(this, false) );
+	});
+	
+	function showHideHelp(that, show) {
+		var jqThis = $(that)
+		var parent = jqThis.parent();
+		var text = parent.children(".helptext");
+		if (show)
+			text.slideDown(100);
+		else
+			text.slideUp(100);
 	}
 	
 </script>

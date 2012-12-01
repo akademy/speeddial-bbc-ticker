@@ -4,7 +4,8 @@ function Data() {
 	this.max = 0;
 	this.current = -1;
 	this.change = 0;
-	this.timerStart = 0;
+	this.timerEnd = 0;
+	this.anim='none';
 }
 
 window.addEventListener( 'load', function() {
@@ -16,7 +17,7 @@ window.addEventListener( 'load', function() {
 
 	var debugging = false;
 	
-	var debug = debug = function() {};
+	var debug = function() {};
 	if( debugging ) {
 		debug = function ( mess ) {
 			opera.postError( "TICKER-DEBUG: [" + mess + "]" );
@@ -28,7 +29,6 @@ window.addEventListener( 'load', function() {
 	var oldestData = new Data();
 
 	var _size = '';
-	var width = -1;
 
 	var rssFeed = '';
 	var urlLink = '';
@@ -88,6 +88,8 @@ window.addEventListener( 'load', function() {
 			
 		animObj.style.setProperty( "animation-name", animation );
 	    animObj.style.setProperty( "animation-fill-mode","forwards" );
+
+		animObj.anim = "hiding";
 	    	
 		if( animType == anims.none )
 			animObj.style.setProperty( "animation-duration","0.2s" );
@@ -96,6 +98,9 @@ window.addEventListener( 'load', function() {
 		else
 			animObj.style.setProperty( "animation-duration","1s" );
 	  
+		//animObj.style.setProperty( "animation-duration","0.1s" );
+		//debug( "Hide:"+ animation );
+		
 		return animObj;
 	}
     
@@ -105,14 +110,19 @@ window.addEventListener( 'load', function() {
 			
 	    animObj.style.setProperty( "animation-name", animation );
 	    animObj.style.setProperty( "animation-fill-mode","forwards" );
-	    	
+
+		animObj.anim = "showing";
+	    
 	    if( animType == anims.none )
 			animObj.style.setProperty( "animation-duration","0.2s" );
 		else if( animType == anims.fade )
 			animObj.style.setProperty( "animation-duration","0.5s" );
 		else
 			animObj.style.setProperty( "animation-duration","1s" );
-        
+	
+		//animObj.style.setProperty( "animation-duration","0.1s" );
+		//debug( "Show:" + animation );
+		
 		return animObj;
 	}
     
@@ -120,7 +130,7 @@ window.addEventListener( 'load', function() {
 
 		var animType = anim * 1;
 
-		var animHideEnd = function() {
+		var animShow = function() {
 			
 			var number = next( data );
 			var feed = bbcFeed.getItemList()[number];
@@ -141,8 +151,8 @@ window.addEventListener( 'load', function() {
 				display += '<div class="image" style="background-image:url(\'' + photoLarge.url + '\');"></div>';
 
 			display += '<div class="text">';
-			display += '<div class="title">' + getText( title ) + '</div>';
-			display += '<div class="desc">'  + getText( description ) + '</div>';
+				display += '<div class="title">' + getText( title ) + '</div>';
+				display += '<div class="desc">'  + getText( description ) + '</div>';
 			display += '</div>';
 
 			if( _size === 'small' || _size === 'tiny' ) {
@@ -150,24 +160,53 @@ window.addEventListener( 'load', function() {
 			}
 			
 			obj.innerHTML = display;
-			obj.removeEventListener( "animationend", animHideEnd );
+			obj.removeEventListener( "animationend", animShow );
 
+			var animEnd = function () {
+				obj.removeEventListener( "animationend", animEnd );
+				obj.anim = "none";
+			}
+			
+			obj.removeEventListener( "animationend", animEnd );
+			obj.addEventListener( "animationend", animEnd );
+			
 			animationShow( obj, animType );
 		};
-		
-		obj.removeEventListener( "animationend", animHideEnd );
-		obj.addEventListener( "animationend", animHideEnd );
-		
-		animationHide( obj, animType ); 
+
+
+		obj.removeEventListener( "animationend", animShow );
+
+		if( obj.anim != "none" ) {
+			// It didn't finish the animation last time so just show it now...
+			debug( "******************* Animation did not End " );
+			animShow();
+		}
+		else {
+			obj.addEventListener( "animationend", animShow );
+			animationHide( obj, animType );
+		}
 	}
 	
 	var objLatest   = document.querySelector( '#latest article' );
 	var objPrevious = document.querySelector( '#previous article' );
 	var objOldest   = document.querySelector( '#oldest article' );
 	
-    function changeLatest() 	{ change( objLatest, 	latestData ); 	}
+    function changeLatest() 	{ change(   objLatest, 	latestData   ); }
 	function changePrevious() 	{ change( objPrevious, 	previousData ); }
-	function changeOldest() 	{ change( objOldest, 	oldestData ); 	}
+	function changeOldest() 	{ change(   objOldest, 	oldestData   ); }
+
+
+	function pauseAnimations() {
+		objLatest.style.setProperty( "animation-play-state","paused" );
+		objPrevious.style.setProperty( "animation-play-state","paused" );
+		objOldest.style.setProperty( "animation-play-state","paused" );
+	}
+	
+	function runAnimations() {
+		objLatest.style.setProperty( "animation-play-state","running" );
+		objPrevious.style.setProperty( "animation-play-state","running" );
+		objOldest.style.setProperty( "animation-play-state","running" );
+	}
 	
 	function getText( maybeText ) {
 		if( maybeText && maybeText.nodeValue ) {
@@ -217,7 +256,6 @@ window.addEventListener( 'load', function() {
 				
 				title += maintitle;
 			}
-			
 			
 			if( title !== '' )
 				title += " - ";
@@ -286,7 +324,7 @@ window.addEventListener( 'load', function() {
     	{
 			if( event.key === 'changeSpeed' && widget.preferences.changeSpeed !== undefined ) {
 				speed = widget.preferences.changeSpeed;
-					_setSections();
+				_setSections();
 			}
 			else if( event.key === 'animationType' && widget.preferences.animationType !== undefined ) {
 				updateAnim( widget.preferences.animationType );
@@ -310,20 +348,19 @@ window.addEventListener( 'load', function() {
 	}, false );
     
 	function _resizeHandler() {
+		
 		var oldSize = _size;
 		_setWidth();
         
 		if( oldSize !== _size ) {
 			
-			/*if( !( (oldSize === "tiny" && _size === "small") ||
-				   (oldSize === "small" && _size === "tiny" ) ||
-				   (oldSize === "big" && _size === "bigger" ) ||
-				   (oldSize === "bigger" && _size === "big" )    ) ) {*/
-					
-				_setSections();
-				_updateSections();
-			//}
+			pauseAnimations();
+		
+			_setSections();
+			_updateSections();
 			
+			runAnimations();
+		
 			if(  _size === 'small' || _size === "tiny" ) {
 			
 				var feed = bbcFeed.getItemList()[_getItemNumber(latestData)];
@@ -333,32 +370,43 @@ window.addEventListener( 'load', function() {
 				updateUrl();
 			}
 		}
+		
 	}
-    
+
+    function _getWidth( width ) {
+		var size = '';
+		
+		if( width > 400) {
+			size = 'large';
+		}
+		else if( width > 310 ) {
+			size = 'bigger';
+		}
+		else if( width > 250) {
+			size = 'big';
+		}
+		else if( width > 170) {
+			size = 'small';
+		}
+		else {
+			size = 'tiny';
+		}
+
+		return size;
+	}
+	
     function _setWidth() {
 		
     	bodyElement = document.getElementsByTagName('body')[0];
-	    	
-		width = bodyElement.clientWidth;
-		_setAnimationSize( width );
-		
-		if( width > 400) {
-			_size = 'large';
-		}
-		else if( width > 310 ) {
-			_size = 'bigger';
-		}
-		else if( width > 250) {
-			_size = 'big';
-		}
-		else if( width > 170) {
-			_size = 'small';
-		}
-		else {
-			_size = 'tiny';
+		var width = bodyElement.clientWidth;
+
+		var newsize = _getWidth( width );
+
+		if( _size != newsize ) {
+			bodyElement.className = _size = newsize;
 		}
 			
-		bodyElement.className = _size;
+		_setAnimationSize( width );
 			
 		return width;
 	}
@@ -370,6 +418,7 @@ window.addEventListener( 'load', function() {
 		
 		var ruleName = "";
 		for( var rule = 0; rule < rules.length; rule++ ) {
+			
 			var cssRule = rules[rule];
 			var ruleName = cssRule.name;
 			
@@ -393,48 +442,41 @@ window.addEventListener( 'load', function() {
     
 	function _setSections() {
 		
-		var mintime = randomNumber( 4, 7 ) * 1000;
-		
+		var mintime = randomNumber( 4, 6 ) * 1000;
+				
 		if( _size === 'large' ) { 
 			
-			latestData.min = 0;
-			latestData.max = 0;
-			latestData.change = 0;
+			latestData.min 		= 0;
+			latestData.max 		= 0;
+			latestData.change 	= 0;
 
-			previousData.min = 1;
-			previousData.max = 4;
-			previousData.change = (mintime + 3000) * speed;
+			previousData.min 	= 1;
+			previousData.max 	= 4;
+			previousData.change = (mintime + 2000) * speed;
 			
-			oldestData.min = 5;
-			oldestData.max = feedCount-1;
-			oldestData.change = mintime * speed;
-			
-			//latestData.current = previousData.current = oldestData.current = -1;
-			//latestData.timerStart = oldestData.timerStart = previousData.timerStart = 0;
+			oldestData.min 		= 5;
+			oldestData.max 		= feedCount-1;
+			oldestData.change 	= mintime * speed;
 		}
 		else if ( _size === 'big' || _size === 'bigger' ) {
 			
-			latestData.min = 0;
-			latestData.max = 4;
-			latestData.change = (mintime + 3000) * speed;
+			latestData.min 		= 0;
+			latestData.max 		= 4;
+			latestData.change 	= (mintime + 2000) * speed;
 
-			previousData.min = 5;
-			previousData.max = feedCount-1;
+			previousData.min 	= 5;
+			previousData.max 	= feedCount-1;
 			previousData.change = mintime * speed;
-			
-			//latestData.current = previousData.current = -1;
-			//latestData.timerStart = previousData.timerStart = 0;
 		}
-		else { // small or tiny
-			latestData.min = 0;
-			latestData.max = feedCount-1;
-			latestData.change = mintime * speed;
-			//latestData.current = -1;
-			//latestData.timerStart = 0;
+		else /* ( _size === 'small' || _size === 'tiny' ) */ {
+			
+			latestData.min 		= 0;
+			latestData.max 		= feedCount-1;
+			latestData.change 	= mintime * speed;
 		}
 		
 		latestData.current = previousData.current = oldestData.current = -1;
-		latestData.timerStart = oldestData.timerStart = previousData.timerStart = 0;
+		latestData.timerEnd = oldestData.timerEnd = previousData.timerEnd = 0;
 	}
     
 	function randomNumber( low, high ) {
@@ -465,67 +507,79 @@ window.addEventListener( 'load', function() {
 		var month = datetime.getMonth(),
 			date = datetime.getDate();
 	   
-		if( _size === 'small' || _size === 'tiny' )
-		{
-			outputdate.innerHTML = formatTime(date) + '' + monthsShort[month];
+		if( _size === 'small' || _size === 'tiny' ) {
+			
+			outputdate.innerHTML = date + '' + monthsShort[month];
 		}
 		else {
 			
 			if( _size === 'big' || _size === 'bigger' ) {
 			
-				outputdate.innerHTML = formatTime(date) + ' ' + monthsShort[month];
+				outputdate.innerHTML = date + ' ' + monthsShort[month];
 			}
 			else /* _size === 'large' */ {
 
-				outputdate.innerHTML = formatTime(date) + ' ' + monthsFull[month];
+				outputdate.innerHTML = date + ' ' + monthsFull[month];
 			}
 		}
 	}
-	
+
+	//var prev = 9999999;
 	var timer = window.setInterval( function() {
 	
 		var datetime = new Date();
 		_updateClock(datetime);
 		
 		var now = Date.now();
-		
-		if( latestData.timerStart   == 0 ) 	latestData.timerStart   = now;
-		if( previousData.timerStart == 0 ) 	previousData.timerStart = now;
-		if( oldestData.timerStart   == 0 ) 	oldestData.timerStart   = now;
 
-		if( latestData.change != 0 && latestData.timerStart + latestData.change < now ) {
-			latestData.timerStart = now;
+		//debug( "Now:" + (now-prev) + " latest-timer-end:" + (latestData.timerEnd - now) + " previous-timer-end:" + (previousData.timerEnd - now) + " oldest-timer-end:" + (oldestData.timerEnd - now) );
+		//prev = now;
+		
+		if(   latestData.timerEnd == 0 ) {   latestData.timerEnd = now + latestData.change;   }
+		if( previousData.timerEnd == 0 ) { previousData.timerEnd = now + previousData.change; }
+		if(   oldestData.timerEnd == 0 ) {   oldestData.timerEnd = now + oldestData.change;   }
+
+
+		if( latestData.change != 0 && latestData.timerEnd < now && latestData.anim == "none" ) {
+			
+			latestData.timerEnd = now + latestData.change;
 			changeLatest();
 		}
 		
-		if( _size === 'large' || _size === 'big' || _size === 'bigger' ) { 
+		if( _size === 'large' || _size === 'big' || _size === 'bigger' ) {
 			
-			if( previousData.timerStart + previousData.change < now ) {
-				previousData.timerStart = now;
+			if( previousData.timerEnd < now && previousData.anim == "none" ) {
+				
+				previousData.timerEnd = now + previousData.change;
 				changePrevious();
 			}
 			
 			if( _size === 'large' ) {
 				
-				if( oldestData.timerStart + oldestData.change < now ) {
-					oldestData.timerStart = now;
+				if( oldestData.timerEnd < now && oldestData.anim == "none" ) {
+					
+					oldestData.timerEnd = now + oldestData.change;
 					changeOldest();
 				}
 			}
-		}		
+		}
 
-	}, 1000);
+	}, 400);
    
    	function newPost(noChange, err) {
         
         if( !err ) {
 			debug( "******** Updating *********" );
 			if( !noChange ) {
-					
+				
 				feedCount = bbcFeed.getItemList().length;
 
+				pauseAnimations();
+				
 				_setSections();
 				_updateSections();
+				
+				runAnimations();
 			}
 			
 			updateDate = new Date();
