@@ -93,10 +93,8 @@ window.addEventListener( 'load', function() {
 	    	
 		if( animType == anims.none )
 			animObj.style.setProperty( "animation-duration","0.2s" );
-		else if( animType == anims.fade )
-			animObj.style.setProperty( "animation-duration","0.5s" );
 		else
-			animObj.style.setProperty( "animation-duration","1s" );
+			animObj.style.setProperty( "animation-duration","0.35s" );
 	  
 		//animObj.style.setProperty( "animation-duration","0.1s" );
 		//debug( "Hide:"+ animation );
@@ -115,10 +113,8 @@ window.addEventListener( 'load', function() {
 	    
 	    if( animType == anims.none )
 			animObj.style.setProperty( "animation-duration","0.2s" );
-		else if( animType == anims.fade )
-			animObj.style.setProperty( "animation-duration","0.5s" );
 		else
-			animObj.style.setProperty( "animation-duration","1s" );
+			animObj.style.setProperty( "animation-duration","0.35s" );
 	
 		//animObj.style.setProperty( "animation-duration","0.1s" );
 		//debug( "Show:" + animation );
@@ -524,11 +520,16 @@ window.addEventListener( 'load', function() {
 		}
 	}
 
-	//var prev = 9999999;
+	var checkDate = 0;
 	var timer = window.setInterval( function() {
-	
-		var datetime = new Date();
-		_updateClock(datetime);
+
+		if( checkDate <= 0 ) {
+			_updateClock( new Date() );
+			checkDate = 15 * 60;
+		}
+		else {
+			checkDate -= 1;	
+		}
 		
 		var now = Date.now();
 
@@ -564,7 +565,7 @@ window.addEventListener( 'load', function() {
 			}
 		}
 
-	}, 400);
+	}, 1000);
    
    	function newPost(noChange, err) {
         
