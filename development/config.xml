@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.akademy.co.uk/software/BBCNewsTicker/" defaultlocale="en" viewmodes="minimized" version="2.1.56">
+<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.akademy.co.uk/software/BBCNewsTicker/" defaultlocale="en" viewmodes="minimized" version="2.1.58">
 
 	<name short="BBC News Ticker">BBC News Speeddial Ticker</name>
 	<description xml:lang="en">A BBC News ticker for Speeddial. It shows and links to the BBC news of your choice, constantly updating from the RSS feed.</description>
